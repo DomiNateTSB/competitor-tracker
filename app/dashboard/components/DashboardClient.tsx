@@ -103,13 +103,23 @@ export default function DashboardClient({
   const [checkingAll, setCheckingAll] = useState(false)
   const [checkAllDone, setCheckAllDone] = useState(false)
   const [showNotif, setShowNotif] = useState(false)
+  const [seenNotifIds, setSeenNotifIds] = useState<Set<string>>(new Set())
   const [discoverPrefillCategory, setDiscoverPrefillCategory] = useState<string | null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
   const router = useRouter()
 
   const checkedCount    = competitors.filter(c => c.last_checked_at).length
   const totalChanges    = allEvents.length
-  const unreviewedCount = allEvents.filter(e => !e.reviewed_at).length
+  const unreviewedCount = allEvents.filter(e => !e.reviewed_at && !seenNotifIds.has(e.id)).length
+
+  function handleBellClick() {
+    if (!showNotif) {
+      // Mark all currently unreviewed as seen when opening the panel
+      const ids = allEvents.filter(e => !e.reviewed_at).map(e => e.id)
+      setSeenNotifIds(prev => new Set([...prev, ...ids]))
+    }
+    setShowNotif(v => !v)
+  }
 
   // Update tab title with unreviewed badge
   useEffect(() => {
@@ -221,7 +231,7 @@ export default function DashboardClient({
 
         {/* Notification bell */}
         <button
-          onClick={() => setShowNotif(v => !v)}
+          onClick={handleBellClick}
           className="relative w-9 h-9 flex items-center justify-center rounded-lg bg-[#0b1628] border border-[#182b45] hover:border-[#243d5c] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors shrink-0"
         >
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
