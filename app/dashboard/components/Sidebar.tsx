@@ -56,7 +56,7 @@ export default function Sidebar({
     <aside className="w-[220px] shrink-0 flex flex-col bg-[#0b1628] border-r border-[#182b45] h-full">
       <div className="px-4 py-4 border-b border-[#182b45]">
         <Link href="/" className="flex items-center justify-center">
-          <img src="/rivalkollen-logo.png?v=2" alt="Rivalkollen" className="h-12 w-auto object-contain" />
+          <img src="/rivalkollen-logo.png?v=2" alt="Rivalkollen" className="h-16 w-auto object-contain" />
         </Link>
       </div>
 
