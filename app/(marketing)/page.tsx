@@ -14,9 +14,9 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-[#07101f] text-[#dce8ff]">
       <nav className="fixed top-0 inset-x-0 z-50 bg-[#07101f]/80 backdrop-blur-md border-b border-[#182b45]">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center">
-            <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-9 w-auto object-contain" />
+            <img src="/rivalkollen-logo.png?v=2" alt="Rivalkollen" className="h-12 w-auto object-contain" />
           </Link>
           <div className="flex items-center gap-3">
             <LanguageSwitcher currentLocale={locale} />
