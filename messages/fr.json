@@ -90,7 +90,13 @@
       "activityLabel": "Activité",
       "notifTitle": "Changements récents",
       "notifEmpty": "Aucun changement détecté pour l'instant.",
-      "discover": "Découvrir des concurrents"
+      "discover": "Découvrir des concurrents",
+      "confirmDelete": "Supprimer le concurrent?",
+      "confirmDeleteDesc": "Cela arrêtera le suivi et supprimera tout l'historique.",
+      "confirmYes": "Supprimer",
+      "confirmNo": "Annuler",
+      "checkAllDone": "{ok} vérifiés, {fail} échoués",
+      "deleteConfirm": "Voulez-vous vraiment supprimer"
     },
     "activity": {
       "title": "Activité",

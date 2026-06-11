@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { scrapeWebsite, detectChanges } from '@/lib/scraper'
 
-export const maxDuration = 60
+export const maxDuration = 300
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
   }
 
   const results = []
+  const delay = (ms: number) => new Promise(r => setTimeout(r, ms))
 
   for (const competitor of competitors ?? []) {
     try {
@@ -74,6 +75,8 @@ export async function GET(request: NextRequest) {
     } catch (err) {
       results.push({ id: competitor.id, status: 'error', error: String(err) })
     }
+    // Small delay between requests to avoid hammering target sites
+    await delay(500)
   }
 
   return NextResponse.json({ checked: results.length, results })

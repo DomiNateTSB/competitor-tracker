@@ -40,12 +40,16 @@ interface Labels {
   statusOk: string
   statusError: string
   statusNever: string
+  confirmDelete: string
+  confirmDeleteDesc: string
+  confirmYes: string
+  confirmNo: string
 }
 
 const severityConfig: Record<string, { dot: string; bg: string; border: string; text: string }> = {
-  high: { dot: 'bg-red-500', bg: 'bg-red-950/40', border: 'border-red-800/40', text: 'text-red-400' },
+  high:   { dot: 'bg-red-500',   bg: 'bg-red-950/40',   border: 'border-red-800/40',   text: 'text-red-400' },
   medium: { dot: 'bg-amber-400', bg: 'bg-amber-950/40', border: 'border-amber-700/40', text: 'text-amber-400' },
-  low: { dot: 'bg-blue-400', bg: 'bg-blue-950/40', border: 'border-blue-800/40', text: 'text-blue-400' },
+  low:    { dot: 'bg-blue-400',  bg: 'bg-blue-950/40',  border: 'border-blue-800/40',  text: 'text-blue-400' },
 }
 
 const categoryKeys = ['restaurant','salon','dentist','car_repair','gym','real_estate','retail','construction','electrician','plumber','other']
@@ -56,6 +60,28 @@ function formatDate(iso: string) {
 
 function getDomain(url: string) {
   try { return new URL(url).hostname.replace('www.', '') } catch { return url }
+}
+
+function Sparkline({ events }: { events: ChangeEvent[] }) {
+  const days = 14
+  const counts = Array.from({ length: days }, (_, i) => {
+    const d = new Date()
+    d.setDate(d.getDate() - (days - 1 - i))
+    const key = d.toISOString().slice(0, 10)
+    return events.filter(e => e.detected_at.slice(0, 10) === key).length
+  })
+  const max = Math.max(...counts, 1)
+  return (
+    <div className="flex items-end gap-px h-5 w-14 shrink-0">
+      {counts.map((c, i) => (
+        <div
+          key={i}
+          className={`flex-1 rounded-sm transition-colors ${c > 0 ? 'bg-[#4f74ff]/60' : 'bg-[#182b45]'}`}
+          style={{ height: c === 0 ? '3px' : `${Math.max((c / max) * 100, 20)}%` }}
+        />
+      ))}
+    </div>
+  )
 }
 
 function EventRow({ event, labels }: { event: ChangeEvent; labels: Pick<Labels, 'hide' | 'diff' | 'removed' | 'added'> }) {
@@ -104,6 +130,52 @@ function EventRow({ event, labels }: { event: ChangeEvent; labels: Pick<Labels, 
   )
 }
 
+function DeleteConfirmDialog({
+  competitorName,
+  labels,
+  onConfirm,
+  onCancel,
+}: {
+  competitorName: string
+  labels: Pick<Labels, 'confirmDelete' | 'confirmDeleteDesc' | 'confirmYes' | 'confirmNo'>
+  onConfirm: () => void
+  onCancel: () => void
+}) {
+  return (
+    <div
+      className="fixed inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center z-50 p-4"
+      onClick={e => e.target === e.currentTarget && onCancel()}
+    >
+      <div className="bg-[#0b1628] rounded-2xl border border-[#182b45] w-full max-w-sm px-6 py-6">
+        <div className="w-10 h-10 rounded-xl bg-red-950/40 border border-red-800/30 flex items-center justify-center mx-auto mb-4">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 4h12M6 4V2.5h4V4M5 4l.5 9.5h5L11 4" stroke="#f87171" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <h3 className="text-[15px] font-semibold text-[#dce8ff] text-center mb-1">{labels.confirmDelete}</h3>
+        <p className="text-[12px] text-[#4d6a8a] text-center mb-1">
+          <span className="text-[#8ba4c0] font-medium">{competitorName}</span>
+        </p>
+        <p className="text-[12px] text-[#4d6a8a] text-center mb-5">{labels.confirmDeleteDesc}</p>
+        <div className="flex gap-2.5">
+          <button
+            onClick={onCancel}
+            className="flex-1 px-4 py-2.5 border border-[#182b45] rounded-lg text-[13px] font-medium text-[#6b85aa] hover:bg-[#182b45] hover:text-[#dce8ff] transition-colors"
+          >
+            {labels.confirmNo}
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-1 px-4 py-2.5 bg-red-900/60 hover:bg-red-800/60 border border-red-800/40 rounded-lg text-[13px] font-medium text-red-300 transition-colors"
+          >
+            {labels.confirmYes}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function CompetitorCard({
   competitor,
   events,
@@ -115,9 +187,11 @@ export default function CompetitorCard({
   labels: Labels
   categoryLabels?: Record<string, string>
 }) {
-  const [checking, setChecking] = useState(false)
-  const [result, setResult] = useState<{ status: string; message: string } | null>(null)
-  const [expanded, setExpanded] = useState(false)
+  const [checking,       setChecking]       = useState(false)
+  const [result,         setResult]         = useState<{ status: string; message: string } | null>(null)
+  const [expanded,       setExpanded]       = useState(false)
+  const [confirmDelete,  setConfirmDelete]  = useState(false)
+  const [deleting,       setDeleting]       = useState(false)
   const router = useRouter()
 
   async function handleCheck() {
@@ -135,103 +209,127 @@ export default function CompetitorCard({
     }
   }
 
+  async function handleDelete() {
+    setDeleting(true)
+    setConfirmDelete(false)
+    const fd = new FormData()
+    fd.append('id', competitor.id)
+    await deleteCompetitor(competitor.id)
+    router.refresh()
+  }
+
   const recentEvents = events.slice(0, 5)
-  const hasChanges = events.length > 0
-  const catLabel = competitor.category
+  const hasChanges   = events.length > 0
+  const catLabel     = competitor.category
     ? (categoryLabels?.[competitor.category] ?? competitor.category)
     : null
 
   return (
-    <div className="bg-[#0b1628] rounded-xl border border-[#182b45] transition-colors hover:border-[#243d5c]">
-      <div className="px-4 sm:px-5 py-4 flex items-center gap-3 sm:gap-4">
-        <div className="w-9 h-9 rounded-lg bg-[#4f74ff]/10 border border-[#4f74ff]/20 flex items-center justify-center text-[#4f74ff] font-semibold text-sm shrink-0">
-          {competitor.name.charAt(0).toUpperCase()}
-        </div>
+    <>
+      {confirmDelete && (
+        <DeleteConfirmDialog
+          competitorName={competitor.name}
+          labels={labels}
+          onConfirm={handleDelete}
+          onCancel={() => setConfirmDelete(false)}
+        />
+      )}
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <Link href={`/dashboard/competitors/${competitor.id}`} className="text-[14px] font-medium text-[#dce8ff] hover:text-[#7a96ff] truncate transition-colors">{competitor.name}</Link>
-            {/* Status indicator */}
-            {competitor.website_url && (() => {
-              const hasError = !!competitor.last_scrape_error
-              const neverChecked = !competitor.last_checked_at && !hasError
-              const dotClass = neverChecked ? 'bg-[#364f6e]' : hasError ? 'bg-red-500' : 'bg-emerald-500'
-              const tipText  = neverChecked ? labels.statusNever : hasError ? labels.statusError : labels.statusOk
-              return (
-                <span title={tipText} className="inline-flex items-center gap-1 text-[11px] text-[#4d6a8a]">
-                  <span className={`w-1.5 h-1.5 rounded-full ${dotClass}`} />
+      <div className={`bg-[#0b1628] rounded-xl border border-[#182b45] transition-colors hover:border-[#243d5c] ${deleting ? 'opacity-40 pointer-events-none' : ''}`}>
+        <div className="px-4 sm:px-5 py-4 flex items-center gap-3 sm:gap-4">
+          <div className="w-9 h-9 rounded-lg bg-[#4f74ff]/10 border border-[#4f74ff]/20 flex items-center justify-center text-[#4f74ff] font-semibold text-sm shrink-0">
+            {competitor.name.charAt(0).toUpperCase()}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <Link href={`/dashboard/competitors/${competitor.id}`} className="text-[14px] font-medium text-[#dce8ff] hover:text-[#7a96ff] truncate transition-colors">{competitor.name}</Link>
+              {/* Status dot */}
+              {competitor.website_url && (() => {
+                const hasError    = !!competitor.last_scrape_error
+                const neverChecked = !competitor.last_checked_at && !hasError
+                const dotClass    = neverChecked ? 'bg-[#364f6e]' : hasError ? 'bg-red-500' : 'bg-emerald-500'
+                const tipText     = neverChecked ? labels.statusNever : hasError ? labels.statusError : labels.statusOk
+                return (
+                  <span title={tipText} className="inline-flex items-center">
+                    <span className={`w-1.5 h-1.5 rounded-full ${dotClass}`} />
+                  </span>
+                )
+              })()}
+              {hasChanges && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-950/50 border border-amber-700/40 text-[10px] font-medium text-amber-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block" />
+                  {events.length} {events.length !== 1 ? labels.changes : labels.change}
                 </span>
-              )
-            })()}
+              )}
+            </div>
+            <div className="flex items-center gap-3 mt-0.5">
+              {catLabel && <span className="text-[12px] text-[#4d6a8a]">{catLabel}</span>}
+              {competitor.website_url && (
+                <a href={competitor.website_url} target="_blank" rel="noopener noreferrer"
+                  className="text-[12px] text-[#4f74ff] hover:text-[#7a96ff] hover:underline transition-colors">
+                  {getDomain(competitor.website_url)}
+                </a>
+              )}
+              {competitor.last_checked_at && (
+                <span className="text-[12px] text-[#364f6e]">{labels.checkedOn} {formatDate(competitor.last_checked_at)}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Sparkline */}
+          <Sparkline events={events} />
+
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {hasChanges && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-950/50 border border-amber-700/40 text-[10px] font-medium text-amber-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span>
-                {events.length} {events.length !== 1 ? labels.changes : labels.change}
-              </span>
+              <button onClick={() => setExpanded(v => !v)}
+                className="text-[12px] text-[#4d6a8a] hover:text-[#6b85aa] px-2.5 py-1.5 rounded-lg hover:bg-[#182b45] transition-colors">
+                {expanded ? labels.hide : labels.viewChanges}
+              </button>
             )}
-          </div>
-          <div className="flex items-center gap-3 mt-0.5">
-            {catLabel && <span className="text-[12px] text-[#4d6a8a]">{catLabel}</span>}
             {competitor.website_url && (
-              <a href={competitor.website_url} target="_blank" rel="noopener noreferrer"
-                className="text-[12px] text-[#4f74ff] hover:text-[#7a96ff] hover:underline transition-colors">
-                {getDomain(competitor.website_url)}
-              </a>
+              <button onClick={handleCheck} disabled={checking}
+                className="text-[12px] bg-[#071018] hover:bg-[#182b45] border border-[#182b45] text-[#6b85aa] px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 font-medium">
+                {checking ? (
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-3 h-3 border-2 border-[#182b45] border-t-[#4f74ff] rounded-full animate-spin" />
+                    {labels.checking}
+                  </span>
+                ) : labels.checkNow}
+              </button>
             )}
-            {competitor.last_checked_at && (
-              <span className="text-[12px] text-[#364f6e]">{labels.checkedOn} {formatDate(competitor.last_checked_at)}</span>
-            )}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {hasChanges && (
-            <button onClick={() => setExpanded(v => !v)}
-              className="text-[12px] text-[#4d6a8a] hover:text-[#6b85aa] px-2.5 py-1.5 rounded-lg hover:bg-[#182b45] transition-colors">
-              {expanded ? labels.hide : labels.viewChanges}
-            </button>
-          )}
-          {competitor.website_url && (
-            <button onClick={handleCheck} disabled={checking}
-              className="text-[12px] bg-[#071018] hover:bg-[#182b45] border border-[#182b45] text-[#6b85aa] px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 font-medium">
-              {checking ? (
-                <span className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 border-2 border-[#182b45] border-t-[#4f74ff] rounded-full animate-spin"></span>
-                  {labels.checking}
-                </span>
-              ) : labels.checkNow}
-            </button>
-          )}
-          <form action={deleteCompetitor.bind(null, competitor.id)}>
-            <button type="submit" title="Remove"
-              className="w-7 h-7 flex items-center justify-center rounded-lg text-[#364f6e] hover:text-red-400 hover:bg-red-950/30 transition-colors">
+            <button
+              onClick={() => setConfirmDelete(true)}
+              title={labels.confirmDelete}
+              className="w-7 h-7 flex items-center justify-center rounded-lg text-[#364f6e] hover:text-red-400 hover:bg-red-950/30 transition-colors"
+            >
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                 <path d="M2 3h9M5 3V2h3v1M4 3l.5 7.5h4L9 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-          </form>
+          </div>
         </div>
+
+        {result && (
+          <div className={`mx-5 mb-3 px-3 py-2 rounded-lg border text-[12px] font-medium ${
+            result.status === 'changed' ? 'bg-amber-950/40 border-amber-700/40 text-amber-400' :
+            result.status === 'error'   ? 'bg-red-950/40 border-red-800/40 text-red-400' :
+                                          'bg-emerald-950/40 border-emerald-700/40 text-emerald-400'
+          }`}>
+            {result.message}
+          </div>
+        )}
+
+        {expanded && recentEvents.length > 0 && (
+          <div className="border-t border-[#182b45] px-5 py-3 space-y-2">
+            <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest mb-2">{labels.changeHistory}</p>
+            {recentEvents.map(event => (
+              <EventRow key={event.id} event={event} labels={labels} />
+            ))}
+          </div>
+        )}
       </div>
-
-      {result && (
-        <div className={`mx-5 mb-3 px-3 py-2 rounded-lg border text-[12px] font-medium ${
-          result.status === 'changed' ? 'bg-amber-950/40 border-amber-700/40 text-amber-400' :
-          result.status === 'error' ? 'bg-red-950/40 border-red-800/40 text-red-400' :
-          'bg-emerald-950/40 border-emerald-700/40 text-emerald-400'
-        }`}>
-          {result.message}
-        </div>
-      )}
-
-      {expanded && recentEvents.length > 0 && (
-        <div className="border-t border-[#182b45] px-5 py-3 space-y-2">
-          <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest mb-2">{labels.changeHistory}</p>
-          {recentEvents.map(event => (
-            <EventRow key={event.id} event={event} labels={labels} />
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   )
 }
 

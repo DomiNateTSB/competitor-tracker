@@ -90,7 +90,13 @@
       "activityLabel": "Aktivitet",
       "notifTitle": "Siste endringer",
       "notifEmpty": "Ingen endringer oppdaget ennå.",
-      "discover": "Finn konkurrenter"
+      "discover": "Finn konkurrenter",
+      "confirmDelete": "Fjern konkurrent?",
+      "confirmDeleteDesc": "Dette stopper overvåking og sletter all endringshistorikk.",
+      "confirmYes": "Fjern",
+      "confirmNo": "Avbryt",
+      "checkAllDone": "{ok} sjekket, {fail} mislyktes",
+      "deleteConfirm": "Er du sikker på at du vil fjerne"
     },
     "activity": {
       "title": "Aktivitet",

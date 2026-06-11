@@ -90,7 +90,13 @@
       "activityLabel": "Aktivitet",
       "notifTitle": "Senaste ändringar",
       "notifEmpty": "Inga ändringar har upptäckts ännu.",
-      "discover": "Hitta konkurrenter"
+      "discover": "Hitta konkurrenter",
+      "confirmDelete": "Ta bort konkurrent?",
+      "confirmDeleteDesc": "Detta stoppar bevakning och tar bort all ändringshistorik.",
+      "confirmYes": "Ta bort",
+      "confirmNo": "Avbryt",
+      "checkAllDone": "{ok} kontrollerade, {fail} misslyckades",
+      "deleteConfirm": "Vill du verkligen ta bort"
     },
     "activity": {
       "title": "Aktivitet",

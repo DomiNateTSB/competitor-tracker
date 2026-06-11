@@ -90,7 +90,13 @@
       "activityLabel": "Aktiivisuus",
       "notifTitle": "Viimeisimmät muutokset",
       "notifEmpty": "Muutoksia ei ole havaittu vielä.",
-      "discover": "Löydä kilpailijoita"
+      "discover": "Löydä kilpailijoita",
+      "confirmDelete": "Poista kilpailija?",
+      "confirmDeleteDesc": "Tämä lopettaa seurannan ja poistaa muutoshistorian.",
+      "confirmYes": "Poista",
+      "confirmNo": "Peruuta",
+      "checkAllDone": "{ok} tarkistettu, {fail} epäonnistui",
+      "deleteConfirm": "Haluatko varmasti poistaa"
     },
     "activity": {
       "title": "Toiminta",

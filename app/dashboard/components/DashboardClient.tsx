@@ -34,35 +34,14 @@ interface Labels {
   changeHistory: string; checkedOn: string; change: string; changes: string
   diff: string; removed: string; added: string
   statusOk: string; statusError: string; statusNever: string
-  checkAll: string; checkingAll: string; allChecked: string
+  checkAll: string; checkingAll: string; allChecked: string; checkAllDone: string
+  confirmDelete: string; confirmDeleteDesc: string; confirmYes: string; confirmNo: string
   search: string; sortBy: string; sortRecent: string; sortChanged: string
   sortChecked: string; sortName: string; filterAll: string; noResults: string
   markReviewed: string; reviewed: string; loadMore: string
   unreviewedChanges: string; activityLabel: string
   notifTitle: string; notifEmpty: string
   tracked: string; checked: string; changesDetected: string; last30Days: string
-}
-
-function Sparkline({ events }: { events: ChangeEvent[] }) {
-  const days = 14
-  const counts = Array.from({ length: days }, (_, i) => {
-    const d = new Date()
-    d.setDate(d.getDate() - (days - 1 - i))
-    const key = d.toISOString().slice(0, 10)
-    return events.filter(e => e.detected_at.slice(0, 10) === key).length
-  })
-  const max = Math.max(...counts, 1)
-  return (
-    <div className="flex items-end gap-px h-6 w-16 shrink-0">
-      {counts.map((c, i) => (
-        <div
-          key={i}
-          className={`flex-1 rounded-sm ${c > 0 ? 'bg-[#4f74ff]/70' : 'bg-[#182b45]'}`}
-          style={{ height: c === 0 ? '3px' : `${Math.max((c / max) * 100, 20)}%` }}
-        />
-      ))}
-    </div>
-  )
 }
 
 export default function DashboardClient({
@@ -101,7 +80,7 @@ export default function DashboardClient({
   const [sort, setSort]         = useState('recent')
   const [category, setCategory] = useState('all')
   const [checkingAll, setCheckingAll] = useState(false)
-  const [checkAllDone, setCheckAllDone] = useState(false)
+  const [checkAllDone, setCheckAllDone] = useState<{ ok: number; fail: number } | null>(null)
   const [showNotif, setShowNotif] = useState(false)
   const [seenNotifIds, setSeenNotifIds] = useState<Set<string>>(new Set())
   const [discoverPrefillCategory, setDiscoverPrefillCategory] = useState<string | null>(null)
@@ -161,12 +140,20 @@ export default function DashboardClient({
     const toCheck = competitors.filter(c => c.website_url)
     if (!toCheck.length) return
     setCheckingAll(true)
-    setCheckAllDone(false)
-    await Promise.allSettled(toCheck.map(c => fetch(`/api/scrape/${c.id}`, { method: 'POST' })))
+    setCheckAllDone(null)
+    let ok = 0, fail = 0
+    for (const c of toCheck) {
+      try {
+        const res = await fetch(`/api/scrape/${c.id}`, { method: 'POST' })
+        res.ok ? ok++ : fail++
+      } catch {
+        fail++
+      }
+    }
     setCheckingAll(false)
-    setCheckAllDone(true)
+    setCheckAllDone({ ok, fail })
     router.refresh()
-    setTimeout(() => setCheckAllDone(false), 3000)
+    setTimeout(() => setCheckAllDone(null), 4000)
   }
 
   // Recent changes for notification feed (last 20 unreviewed across all competitors)
@@ -265,7 +252,9 @@ export default function DashboardClient({
           {checkingAll ? (
             <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />{labels.checkingAll}</>
           ) : checkAllDone ? (
-            <><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>{labels.allChecked}</>
+            checkAllDone.fail === 0
+              ? <><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>{labels.checkAllDone.replace('{ok}', String(checkAllDone.ok)).replace('{fail}', '0')}</>
+              : <span className="text-amber-300">{labels.checkAllDone.replace('{ok}', String(checkAllDone.ok)).replace('{fail}', String(checkAllDone.fail))}</span>
           ) : (
             <><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6A4 4 0 1 1 6 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M8.5 2h2v2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>{labels.checkAll}</>
           )}
@@ -321,19 +310,13 @@ export default function DashboardClient({
       ) : (
         <div className="space-y-3">
           {filtered.map(c => (
-            <div key={c.id} className="flex items-stretch gap-3">
-              <div className="flex-1 min-w-0">
-                <CompetitorCard
-                  competitor={c}
-                  events={eventsByCompetitor[c.id] ?? []}
-                  labels={cardLabels}
-                  categoryLabels={categoryLabels}
-                />
-              </div>
-              <div className="flex flex-col items-center justify-center py-4 shrink-0">
-                <Sparkline events={eventsByCompetitor[c.id] ?? []} />
-              </div>
-            </div>
+            <CompetitorCard
+              key={c.id}
+              competitor={c}
+              events={eventsByCompetitor[c.id] ?? []}
+              labels={cardLabels}
+              categoryLabels={categoryLabels}
+            />
           ))}
         </div>
       )}

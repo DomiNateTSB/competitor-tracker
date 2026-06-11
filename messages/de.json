@@ -90,7 +90,13 @@
       "activityLabel": "Aktivität",
       "notifTitle": "Neueste Änderungen",
       "notifEmpty": "Noch keine Änderungen erkannt.",
-      "discover": "Wettbewerber entdecken"
+      "discover": "Wettbewerber entdecken",
+      "confirmDelete": "Wettbewerber entfernen?",
+      "confirmDeleteDesc": "Dies stoppt die Überwachung und löscht den Verlauf.",
+      "confirmYes": "Entfernen",
+      "confirmNo": "Abbrechen",
+      "checkAllDone": "{ok} geprüft, {fail} fehlgeschlagen",
+      "deleteConfirm": "Möchten Sie wirklich entfernen"
     },
     "activity": {
       "title": "Aktivität",
