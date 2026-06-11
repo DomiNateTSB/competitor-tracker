@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ActivityChart from '@/app/dashboard/components/ActivityChart'
+import { updateNotes } from './actions'
 
 interface ChangeEvent {
   id: string
@@ -22,12 +23,13 @@ interface Competitor {
   category: string | null
   created_at: string
   last_checked_at: string | null
+  notes?: string | null
 }
 
 const severityConfig = {
-  high:   { dot: 'bg-red-500',   bg: 'bg-red-950/40',    border: 'border-red-800/40',    text: 'text-red-400',   badge: 'High' },
-  medium: { dot: 'bg-amber-400', bg: 'bg-amber-950/40',  border: 'border-amber-700/40',  text: 'text-amber-400', badge: 'Medium' },
-  low:    { dot: 'bg-blue-400',  bg: 'bg-blue-950/40',   border: 'border-blue-800/40',   text: 'text-blue-400',  badge: 'Low' },
+  high:   { dot: 'bg-red-500',   bg: 'bg-red-950/40',   border: 'border-red-800/40',   text: 'text-red-400',   badge: 'High' },
+  medium: { dot: 'bg-amber-400', bg: 'bg-amber-950/40', border: 'border-amber-700/40', text: 'text-amber-400', badge: 'Medium' },
+  low:    { dot: 'bg-blue-400',  bg: 'bg-blue-950/40',  border: 'border-blue-800/40',  text: 'text-blue-400',  badge: 'Low' },
 }
 
 function formatDate(iso: string) {
@@ -46,7 +48,7 @@ function DiffView({ details }: { details: { added: string; removed: string; chan
       {removed && (
         <div className="bg-red-950/30 border border-red-900/40 rounded-lg px-3 py-2.5">
           <p className="text-[10px] font-semibold text-red-400/60 uppercase tracking-widest mb-1.5">Removed</p>
-          <p className="text-[12px] text-red-300/80 leading-relaxed font-mono">
+          <p className="text-[12px] text-red-300/80 leading-relaxed font-mono break-words">
             {removed}{details.removed.length > 500 ? '…' : ''}
           </p>
         </div>
@@ -54,14 +56,12 @@ function DiffView({ details }: { details: { added: string; removed: string; chan
       {added && (
         <div className="bg-emerald-950/30 border border-emerald-900/40 rounded-lg px-3 py-2.5">
           <p className="text-[10px] font-semibold text-emerald-400/60 uppercase tracking-widest mb-1.5">Added</p>
-          <p className="text-[12px] text-emerald-300/80 leading-relaxed font-mono">
+          <p className="text-[12px] text-emerald-300/80 leading-relaxed font-mono break-words">
             {added}{details.added.length > 500 ? '…' : ''}
           </p>
         </div>
       )}
-      <p className="text-[11px] text-[#364f6e]">
-        Change ratio: {(details.changeRatio * 100).toFixed(1)}%
-      </p>
+      <p className="text-[11px] text-[#364f6e]">Change ratio: {(details.changeRatio * 100).toFixed(1)}%</p>
     </div>
   )
 }
@@ -102,9 +102,104 @@ function StatBlock({ label, value, highlight }: { label: string; value: string |
   return (
     <div className="bg-[#0b1628] rounded-xl border border-[#182b45] px-5 py-4">
       <p className="text-[11px] font-medium text-[#364f6e] uppercase tracking-wider mb-1">{label}</p>
-      <p className={`text-xl font-semibold truncate ${highlight ? 'text-[#4f74ff]' : 'text-[#dce8ff]'}`}>{value}</p>
+      <p className={`text-[18px] font-semibold truncate ${highlight ? 'text-[#4f74ff]' : 'text-[#dce8ff]'}`}>{value}</p>
     </div>
   )
+}
+
+function EmptyState({ neverChecked }: { neverChecked: boolean }) {
+  if (neverChecked) {
+    return (
+      <div className="bg-[#0b1628] rounded-xl border border-[#182b45] px-6 py-12 text-center">
+        <div className="w-12 h-12 rounded-xl bg-[#071018] border border-[#182b45] flex items-center justify-center mx-auto mb-4">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M17 10A7 7 0 1 1 10 3" stroke="#4f74ff" strokeWidth="1.5" strokeLinecap="round"/>
+            <path d="M14 3h3.5v3.5" stroke="#4f74ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <h3 className="text-[15px] font-semibold text-[#dce8ff] mb-2">Run your first check</h3>
+        <p className="text-[13px] text-[#4d6a8a] max-w-xs mx-auto leading-relaxed">
+          Click <strong className="text-[#6b85aa]">Check now</strong> above to scan this competitor's website and establish a baseline. Future checks will compare against this snapshot.
+        </p>
+        <div className="mt-6 flex items-center justify-center gap-6 text-[12px] text-[#364f6e]">
+          <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#4f74ff]"></span>Scan website</span>
+          <span className="text-[#182b45]">→</span>
+          <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#4f74ff]"></span>Set baseline</span>
+          <span className="text-[#182b45]">→</span>
+          <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#4f74ff]"></span>Detect changes</span>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="bg-[#0b1628] rounded-xl border border-[#182b45] px-6 py-12 text-center">
+      <div className="w-12 h-12 rounded-xl bg-emerald-950/40 border border-emerald-800/30 flex items-center justify-center mx-auto mb-4">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M4 10l4.5 4.5L16 6" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+      <h3 className="text-[15px] font-semibold text-[#dce8ff] mb-2">No changes detected</h3>
+      <p className="text-[13px] text-[#4d6a8a] max-w-xs mx-auto leading-relaxed">
+        This competitor's website hasn't changed since you started tracking it. We'll notify you the moment something shifts.
+      </p>
+    </div>
+  )
+}
+
+function NotesEditor({ competitorId, initialNotes }: { competitorId: string; initialNotes: string }) {
+  const [notes, setNotes]     = useState(initialNotes)
+  const [saving, setSaving]   = useState(false)
+  const [saved, setSaved]     = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  async function save(value: string) {
+    setSaving(true)
+    setSaved(false)
+    await updateNotes(competitorId, value)
+    setSaving(false)
+    setSaved(true)
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => setSaved(false), 2000)
+  }
+
+  return (
+    <div className="mt-6">
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest">Notes</p>
+        {saving && <span className="text-[11px] text-[#4d6a8a]">Saving…</span>}
+        {saved && !saving && <span className="text-[11px] text-emerald-500">Saved</span>}
+      </div>
+      <textarea
+        value={notes}
+        onChange={e => setNotes(e.target.value)}
+        onBlur={e => save(e.target.value)}
+        placeholder="Add private notes about this competitor — pricing observations, strategy notes, anything relevant…"
+        rows={4}
+        className="w-full bg-[#0b1628] border border-[#182b45] focus:border-[#4f74ff] focus:ring-2 focus:ring-[#4f74ff]/20 rounded-xl px-4 py-3 text-[13px] text-[#dce8ff] placeholder-[#2d4a68] resize-none outline-none transition-colors"
+      />
+    </div>
+  )
+}
+
+function exportCsv(events: ChangeEvent[], competitorName: string) {
+  const rows = [
+    ['Date', 'Summary', 'Severity', 'Change ratio (%)'],
+    ...events.map(e => [
+      formatDate(e.detected_at),
+      e.summary,
+      e.severity,
+      e.details ? (e.details.changeRatio * 100).toFixed(1) : '',
+    ]),
+  ]
+  const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\r\n')
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const url  = URL.createObjectURL(blob)
+  const a    = document.createElement('a')
+  a.href     = url
+  a.download = `${competitorName.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-changes.csv`
+  a.click()
+  URL.revokeObjectURL(url)
 }
 
 export default function CompetitorDetailView({
@@ -135,6 +230,8 @@ export default function CompetitorDetailView({
     }
   }
 
+  const neverChecked = !competitor.last_checked_at
+
   return (
     <div className="px-8 py-8 max-w-4xl">
       {/* Back */}
@@ -162,32 +259,45 @@ export default function CompetitorDetailView({
           </div>
         </div>
 
-        {competitor.website_url && (
-          <button onClick={handleCheck} disabled={checking}
-            className="flex items-center gap-2 text-[13px] bg-[#071018] hover:bg-[#182b45] border border-[#182b45] text-[#6b85aa] px-4 py-2 rounded-lg transition-colors disabled:opacity-40 font-medium shrink-0">
-            {checking ? (
-              <>
-                <span className="w-3.5 h-3.5 border-2 border-[#182b45] border-t-[#4f74ff] rounded-full animate-spin" />
-                Checking…
-              </>
-            ) : (
-              <>
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <path d="M11 6.5A4.5 4.5 0 1 1 6.5 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-                  <path d="M9 2h2.5v2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                Check now
-              </>
-            )}
-          </button>
-        )}
+        <div className="flex items-center gap-2 shrink-0">
+          {events.length > 0 && (
+            <button
+              onClick={() => exportCsv(events, competitor.name)}
+              className="flex items-center gap-1.5 text-[12px] text-[#4d6a8a] hover:text-[#dce8ff] border border-[#182b45] hover:border-[#243d5c] px-3 py-2 rounded-lg transition-colors"
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M6 1v7M3 5.5l3 3 3-3M1 10h10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Export CSV
+            </button>
+          )}
+          {competitor.website_url && (
+            <button onClick={handleCheck} disabled={checking}
+              className="flex items-center gap-2 text-[13px] bg-[#071018] hover:bg-[#182b45] border border-[#182b45] text-[#6b85aa] px-4 py-2 rounded-lg transition-colors disabled:opacity-40 font-medium">
+              {checking ? (
+                <>
+                  <span className="w-3.5 h-3.5 border-2 border-[#182b45] border-t-[#4f74ff] rounded-full animate-spin" />
+                  Checking…
+                </>
+              ) : (
+                <>
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M11 6.5A4.5 4.5 0 1 1 6.5 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                    <path d="M9 2h2.5v2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Check now
+                </>
+              )}
+            </button>
+          )}
+        </div>
       </div>
 
       {result && (
         <div className={`mb-5 px-3 py-2.5 rounded-lg border text-[13px] font-medium ${
-          result.status === 'changed'      ? 'bg-amber-950/40 border-amber-700/40 text-amber-400' :
-          result.status === 'error'        ? 'bg-red-950/40 border-red-800/40 text-red-400' :
-                                             'bg-emerald-950/40 border-emerald-700/40 text-emerald-400'
+          result.status === 'changed'  ? 'bg-amber-950/40 border-amber-700/40 text-amber-400' :
+          result.status === 'error'    ? 'bg-red-950/40 border-red-800/40 text-red-400' :
+                                         'bg-emerald-950/40 border-emerald-700/40 text-emerald-400'
         }`}>
           {result.message}
         </div>
@@ -195,7 +305,7 @@ export default function CompetitorDetailView({
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-5">
-        <StatBlock label="Total changes" value={events.length} highlight={events.length > 0} />
+        <StatBlock label="Total changes"  value={events.length} highlight={events.length > 0} />
         <StatBlock label="Last checked"   value={competitor.last_checked_at ? formatDate(competitor.last_checked_at) : 'Never'} />
         <StatBlock label="Tracking since" value={formatDate(competitor.created_at)} />
       </div>
@@ -210,17 +320,21 @@ export default function CompetitorDetailView({
         <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest mb-3">
           Change history ({events.length})
         </p>
-        {events.length === 0 ? (
-          <div className="bg-[#0b1628] rounded-xl border border-[#182b45] px-6 py-12 text-center">
-            <p className="text-[14px] text-[#4d6a8a]">No changes detected yet.</p>
-            <p className="text-[12px] text-[#364f6e] mt-1">Click "Check now" to run the first scan.</p>
-          </div>
-        ) : (
-          <div className="space-y-2.5">
-            {events.map(event => <EventRow key={event.id} event={event} />)}
-          </div>
-        )}
+        {events.length === 0
+          ? <EmptyState neverChecked={neverChecked} />
+          : (
+            <div className="space-y-2.5">
+              {events.map(event => <EventRow key={event.id} event={event} />)}
+            </div>
+          )
+        }
       </div>
+
+      {/* Notes */}
+      <NotesEditor
+        competitorId={competitor.id}
+        initialNotes={competitor.notes ?? ''}
+      />
     </div>
   )
 }
