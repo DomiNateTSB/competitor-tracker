@@ -56,11 +56,12 @@ export async function GET(request: NextRequest) {
       .gte('detected_at', sevenDaysAgo.toISOString())
       .order('detected_at', { ascending: false })
 
+    type EventRow = NonNullable<typeof events>[number]
     const eventsByCompetitor = (events ?? []).reduce((acc, e) => {
       acc[e.competitor_id] = acc[e.competitor_id] ?? []
       acc[e.competitor_id].push(e)
       return acc
-    }, {} as Record<string, typeof events>)
+    }, {} as Record<string, EventRow[]>)
 
     const digestCompetitors = competitors.map(c => ({
       name: c.name,
