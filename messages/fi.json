@@ -89,7 +89,8 @@
       "unreviewedChanges": "tarkistamattomat muutokset",
       "activityLabel": "Aktiivisuus",
       "notifTitle": "Viimeisimmät muutokset",
-      "notifEmpty": "Muutoksia ei ole havaittu vielä."
+      "notifEmpty": "Muutoksia ei ole havaittu vielä.",
+      "discover": "Löydä kilpailijoita"
     },
     "activity": {
       "title": "Toiminta",
@@ -186,6 +187,26 @@
       "share": "Jaa raportti",
       "shareCopied": "Linkki kopioitu!",
       "shareRevoke": "Poista linkki"
+    },
+    "discover": {
+      "title": "Löydä kilpailijoita",
+      "subtitle": "Etsi paikallisia yrityksiä seurattavaksi",
+      "locationLabel": "Alueesi",
+      "locationPlaceholder": "esim. Helsinki, Tampere, Turku",
+      "categoryLabel": "Kategoria",
+      "allCategories": "Kaikki kategoriat",
+      "searchBtn": "Etsi kilpailijoita",
+      "trackedLabel": "Jo seurannassa",
+      "suggestedLabel": "Ehdotetut haut",
+      "openMaps": "Avaa Google Mapsissa",
+      "addCompetitor": "Lisää kilpailija",
+      "relatedLabel": "Liittyvät kategoriat",
+      "tipTitle": "Ohjeet",
+      "tip1": "Etsi yrityksiä Google Mapsista",
+      "tip2": "Kopioi heidän verkkosivusto-URL",
+      "tip3": "Lisää kilpailijaksi",
+      "noLocation": "Syötä alue yllä saadaksesi hakuehdotuksia.",
+      "mapsQueryNote": "Avaa esitäytetyn Google Maps -haun."
     }
   },
   "landing": {

@@ -13,6 +13,7 @@ export default async function DashboardPage() {
   const t  = await getTranslations('dashboard.competitors')
   const tm = await getTranslations('dashboard.modal')
   const tc = await getTranslations('dashboard.categories')
+  const td = await getTranslations('dashboard.discover')
 
   const { data: competitors } = await supabase
     .from('competitors')
@@ -129,7 +130,18 @@ export default async function DashboardPage() {
           categoryLabels={categoryLabels}
           cardLabels={cardLabels}
           labels={cardLabels}
+          modalLabels={modalLabels}
           statLabels={{ tracked: t('tracked'), checked: t('checked'), changesDetected: t('changesDetected'), last30Days: t('last30Days') }}
+          discoverLabels={{
+            title: td('title'), subtitle: td('subtitle'),
+            locationLabel: td('locationLabel'), locationPlaceholder: td('locationPlaceholder'),
+            categoryLabel: td('categoryLabel'), allCategories: td('allCategories'),
+            searchBtn: td('searchBtn'), trackedLabel: td('trackedLabel'),
+            suggestedLabel: td('suggestedLabel'), openMaps: td('openMaps'),
+            addCompetitor: td('addCompetitor'), relatedLabel: td('relatedLabel'),
+            tipTitle: td('tipTitle'), tip1: td('tip1'), tip2: td('tip2'), tip3: td('tip3'),
+            noLocation: td('noLocation'), mapsQueryNote: td('mapsQueryNote'),
+          }}
         />
       )}
     </div>

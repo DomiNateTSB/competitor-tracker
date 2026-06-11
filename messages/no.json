@@ -89,7 +89,8 @@
       "unreviewedChanges": "ugjennomgåtte endringer",
       "activityLabel": "Aktivitet",
       "notifTitle": "Siste endringer",
-      "notifEmpty": "Ingen endringer oppdaget ennå."
+      "notifEmpty": "Ingen endringer oppdaget ennå.",
+      "discover": "Finn konkurrenter"
     },
     "activity": {
       "title": "Aktivitet",
@@ -186,6 +187,26 @@
       "share": "Del rapport",
       "shareCopied": "Lenke kopiert!",
       "shareRevoke": "Fjern lenke"
+    },
+    "discover": {
+      "title": "Finn konkurrenter",
+      "subtitle": "Finn lokale bedrifter å overvåke i ditt område",
+      "locationLabel": "Ditt område",
+      "locationPlaceholder": "f.eks. Oslo, Bergen, Trondheim",
+      "categoryLabel": "Kategori",
+      "allCategories": "Alle kategorier",
+      "searchBtn": "Finn konkurrenter",
+      "trackedLabel": "Overvåker allerede",
+      "suggestedLabel": "Foreslåtte søk",
+      "openMaps": "Åpne i Google Maps",
+      "addCompetitor": "Legg til konkurrent",
+      "relatedLabel": "Relaterte kategorier",
+      "tipTitle": "Slik bruker du det",
+      "tip1": "Søk etter bedrifter på Google Maps",
+      "tip2": "Kopier nettstedets URL",
+      "tip3": "Legg dem til som konkurrent",
+      "noLocation": "Skriv inn et område ovenfor.",
+      "mapsQueryNote": "Åpner et forhåndsutfylt Google Maps-søk."
     }
   },
   "landing": {

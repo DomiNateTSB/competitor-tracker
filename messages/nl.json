@@ -89,7 +89,8 @@
       "unreviewedChanges": "onbekeken wijzigingen",
       "activityLabel": "Activiteit",
       "notifTitle": "Recente wijzigingen",
-      "notifEmpty": "Nog geen wijzigingen gedetecteerd."
+      "notifEmpty": "Nog geen wijzigingen gedetecteerd.",
+      "discover": "Concurrenten ontdekken"
     },
     "activity": {
       "title": "Activiteit",
@@ -186,6 +187,26 @@
       "share": "Rapport delen",
       "shareCopied": "Link gekopieerd!",
       "shareRevoke": "Link verwijderen"
+    },
+    "discover": {
+      "title": "Concurrenten ontdekken",
+      "subtitle": "Vind lokale bedrijven om te volgen",
+      "locationLabel": "Uw gebied",
+      "locationPlaceholder": "bijv. Amsterdam, Rotterdam, Den Haag",
+      "categoryLabel": "Categorie",
+      "allCategories": "Alle categorieën",
+      "searchBtn": "Concurrenten vinden",
+      "trackedLabel": "Al gevolgd",
+      "suggestedLabel": "Aanbevolen zoekopdrachten",
+      "openMaps": "Openen in Google Maps",
+      "addCompetitor": "Concurrent toevoegen",
+      "relatedLabel": "Gerelateerde categorieën",
+      "tipTitle": "Hoe te gebruiken",
+      "tip1": "Zoek bedrijven op Google Maps",
+      "tip2": "Kopieer hun website-URL",
+      "tip3": "Voeg ze toe als concurrent",
+      "noLocation": "Voer hierboven een locatie in.",
+      "mapsQueryNote": "Opent een vooringevulde Google Maps-zoekopdracht."
     }
   },
   "landing": {

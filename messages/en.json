@@ -89,7 +89,8 @@
       "unreviewedChanges": "unreviewed changes",
       "activityLabel": "Activity",
       "notifTitle": "Recent changes",
-      "notifEmpty": "No changes detected yet."
+      "notifEmpty": "No changes detected yet.",
+      "discover": "Discover competitors"
     },
     "activity": {
       "title": "Activity",
@@ -186,6 +187,26 @@
       "share": "Share report",
       "shareCopied": "Link copied!",
       "shareRevoke": "Revoke link"
+    },
+    "discover": {
+      "title": "Discover competitors",
+      "subtitle": "Find local businesses to track in your area",
+      "locationLabel": "Your area",
+      "locationPlaceholder": "e.g. Stockholm, Göteborg, Malmö",
+      "categoryLabel": "Category",
+      "allCategories": "All categories",
+      "searchBtn": "Find competitors",
+      "trackedLabel": "Already tracking",
+      "suggestedLabel": "Suggested searches",
+      "openMaps": "Open in Google Maps",
+      "addCompetitor": "Add competitor",
+      "relatedLabel": "Related categories to explore",
+      "tipTitle": "How to use",
+      "tip1": "Search for businesses on Google Maps",
+      "tip2": "Copy their website URL",
+      "tip3": "Add them as a competitor above",
+      "noLocation": "Enter a location above to get search suggestions.",
+      "mapsQueryNote": "Opens a pre-filled Google Maps search — find a business, copy their website, and add it."
     }
   },
   "landing": {

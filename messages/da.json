@@ -89,7 +89,8 @@
       "unreviewedChanges": "ugennemgåede ændringer",
       "activityLabel": "Aktivitet",
       "notifTitle": "Seneste ændringer",
-      "notifEmpty": "Ingen ændringer opdaget endnu."
+      "notifEmpty": "Ingen ændringer opdaget endnu.",
+      "discover": "Find konkurrenter"
     },
     "activity": {
       "title": "Aktivitet",
@@ -186,6 +187,26 @@
       "share": "Del rapport",
       "shareCopied": "Link kopieret!",
       "shareRevoke": "Fjern link"
+    },
+    "discover": {
+      "title": "Find konkurrenter",
+      "subtitle": "Find lokale virksomheder at overvåge i dit område",
+      "locationLabel": "Dit område",
+      "locationPlaceholder": "f.eks. København, Aarhus, Odense",
+      "categoryLabel": "Kategori",
+      "allCategories": "Alle kategorier",
+      "searchBtn": "Find konkurrenter",
+      "trackedLabel": "Overvåger allerede",
+      "suggestedLabel": "Foreslåede søgninger",
+      "openMaps": "Åbn i Google Maps",
+      "addCompetitor": "Tilføj konkurrent",
+      "relatedLabel": "Relaterede kategorier at udforske",
+      "tipTitle": "Sådan bruger du det",
+      "tip1": "Søg efter virksomheder på Google Maps",
+      "tip2": "Kopier deres hjemmeside-URL",
+      "tip3": "Tilføj dem som konkurrent ovenfor",
+      "noLocation": "Indtast et område ovenfor for at få søgeforslag.",
+      "mapsQueryNote": "Åbner en præudfyldt Google Maps-søgning."
     }
   },
   "landing": {

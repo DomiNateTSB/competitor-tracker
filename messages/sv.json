@@ -89,7 +89,8 @@
       "unreviewedChanges": "ogranskade ändringar",
       "activityLabel": "Aktivitet",
       "notifTitle": "Senaste ändringar",
-      "notifEmpty": "Inga ändringar har upptäckts ännu."
+      "notifEmpty": "Inga ändringar har upptäckts ännu.",
+      "discover": "Hitta konkurrenter"
     },
     "activity": {
       "title": "Aktivitet",
@@ -186,6 +187,26 @@
       "share": "Dela rapport",
       "shareCopied": "Länk kopierad!",
       "shareRevoke": "Ta bort länk"
+    },
+    "discover": {
+      "title": "Hitta konkurrenter",
+      "subtitle": "Hitta lokala företag att bevaka i ditt område",
+      "locationLabel": "Ditt område",
+      "locationPlaceholder": "t.ex. Stockholm, Göteborg, Malmö",
+      "categoryLabel": "Kategori",
+      "allCategories": "Alla kategorier",
+      "searchBtn": "Hitta konkurrenter",
+      "trackedLabel": "Bevakar redan",
+      "suggestedLabel": "Föreslagna sökningar",
+      "openMaps": "Öppna i Google Maps",
+      "addCompetitor": "Lägg till konkurrent",
+      "relatedLabel": "Relaterade kategorier att utforska",
+      "tipTitle": "Så här gör du",
+      "tip1": "Sök efter företag på Google Maps",
+      "tip2": "Kopiera deras webbplats-URL",
+      "tip3": "Lägg till dem som konkurrent ovan",
+      "noLocation": "Ange ett område ovan för att få sökförslag.",
+      "mapsQueryNote": "Öppnar en förifylld Google Maps-sökning — hitta ett företag, kopiera deras webbplats och lägg till dem."
     }
   },
   "landing": {

@@ -89,7 +89,8 @@
       "unreviewedChanges": "alterações não revisadas",
       "activityLabel": "Atividade",
       "notifTitle": "Alterações recentes",
-      "notifEmpty": "Nenhuma alteração detectada ainda."
+      "notifEmpty": "Nenhuma alteração detectada ainda.",
+      "discover": "Descobrir concorrentes"
     },
     "activity": {
       "title": "Atividade",
@@ -186,6 +187,26 @@
       "share": "Compartilhar relatório",
       "shareCopied": "Link copiado!",
       "shareRevoke": "Remover link"
+    },
+    "discover": {
+      "title": "Descobrir concorrentes",
+      "subtitle": "Encontre negócios locais para monitorar",
+      "locationLabel": "Sua área",
+      "locationPlaceholder": "ex. Lisboa, Porto, Braga",
+      "categoryLabel": "Categoria",
+      "allCategories": "Todas as categorias",
+      "searchBtn": "Encontrar concorrentes",
+      "trackedLabel": "Já monitorando",
+      "suggestedLabel": "Pesquisas sugeridas",
+      "openMaps": "Abrir no Google Maps",
+      "addCompetitor": "Adicionar concorrente",
+      "relatedLabel": "Categorias relacionadas",
+      "tipTitle": "Como usar",
+      "tip1": "Pesquise negócios no Google Maps",
+      "tip2": "Copie a URL do site deles",
+      "tip3": "Adicione-os como concorrente",
+      "noLocation": "Digite uma localização acima.",
+      "mapsQueryNote": "Abre uma pesquisa pré-preenchida no Google Maps."
     }
   },
   "landing": {

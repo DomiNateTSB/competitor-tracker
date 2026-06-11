@@ -4,6 +4,8 @@ import { useState, useMemo, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import CompetitorCard from './CompetitorCard'
 import ActivityChart from './ActivityChart'
+import DiscoverModal from './DiscoverModal'
+import AddCompetitorModal from './AddCompetitorModal'
 
 interface ChangeEvent {
   id: string
@@ -72,6 +74,8 @@ export default function DashboardClient({
   cardLabels,
   labels,
   statLabels,
+  discoverLabels,
+  modalLabels,
 }: {
   competitors: Competitor[]
   eventsByCompetitor: Record<string, ChangeEvent[]>
@@ -81,6 +85,17 @@ export default function DashboardClient({
   cardLabels: Labels
   labels: Labels
   statLabels: { tracked: string; checked: string; changesDetected: string; last30Days: string }
+  discoverLabels: {
+    title: string; subtitle: string; locationLabel: string; locationPlaceholder: string
+    categoryLabel: string; allCategories: string; searchBtn: string; trackedLabel: string
+    suggestedLabel: string; openMaps: string; addCompetitor: string; relatedLabel: string
+    tipTitle: string; tip1: string; tip2: string; tip3: string; noLocation: string; mapsQueryNote: string
+  }
+  modalLabels: {
+    button: string; title: string; subtitle: string; businessName: string; websiteUrl: string
+    googleMapsUrl: string; googleMapsHint: string; category: string; selectCategory: string
+    cancel: string; add: string; adding: string
+  }
 }) {
   const [search, setSearch]     = useState('')
   const [sort, setSort]         = useState('recent')
@@ -88,6 +103,8 @@ export default function DashboardClient({
   const [checkingAll, setCheckingAll] = useState(false)
   const [checkAllDone, setCheckAllDone] = useState(false)
   const [showNotif, setShowNotif] = useState(false)
+  const [discoverPrefillCategory, setDiscoverPrefillCategory] = useState<string | null>(null)
+  const [showAddModal, setShowAddModal] = useState(false)
   const router = useRouter()
 
   const checkedCount    = competitors.filter(c => c.last_checked_at).length
@@ -218,6 +235,17 @@ export default function DashboardClient({
           )}
         </button>
 
+        {/* Discover */}
+        <DiscoverModal
+          labels={discoverLabels}
+          categoryLabels={categoryLabels}
+          trackedCategories={[...new Set(competitors.map(c => c.category).filter(Boolean) as string[])]}
+          onAddCompetitor={({ category: cat }) => {
+            setDiscoverPrefillCategory(cat)
+            setShowAddModal(true)
+          }}
+        />
+
         {/* Check all */}
         <button
           onClick={handleCheckAll}
@@ -264,6 +292,17 @@ export default function DashboardClient({
             </div>
           )}
         </div>
+      )}
+
+      {/* Controlled AddCompetitorModal triggered from Discover */}
+      {showAddModal && (
+        <AddCompetitorModal
+          labels={modalLabels}
+          categoryLabels={categoryLabels}
+          externalOpen={showAddModal}
+          defaultCategory={discoverPrefillCategory}
+          onExternalClose={() => { setShowAddModal(false); setDiscoverPrefillCategory(null) }}
+        />
       )}
 
       {/* Competitor list */}

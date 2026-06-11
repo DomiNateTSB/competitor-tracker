@@ -89,7 +89,8 @@
       "unreviewedChanges": "changements non revus",
       "activityLabel": "Activité",
       "notifTitle": "Changements récents",
-      "notifEmpty": "Aucun changement détecté pour l'instant."
+      "notifEmpty": "Aucun changement détecté pour l'instant.",
+      "discover": "Découvrir des concurrents"
     },
     "activity": {
       "title": "Activité",
@@ -186,6 +187,26 @@
       "share": "Partager le rapport",
       "shareCopied": "Lien copié !",
       "shareRevoke": "Supprimer le lien"
+    },
+    "discover": {
+      "title": "Découvrir des concurrents",
+      "subtitle": "Trouvez des entreprises locales à surveiller",
+      "locationLabel": "Votre zone",
+      "locationPlaceholder": "ex. Paris, Lyon, Marseille",
+      "categoryLabel": "Catégorie",
+      "allCategories": "Toutes catégories",
+      "searchBtn": "Trouver des concurrents",
+      "trackedLabel": "Déjà suivi",
+      "suggestedLabel": "Recherches suggérées",
+      "openMaps": "Ouvrir dans Google Maps",
+      "addCompetitor": "Ajouter un concurrent",
+      "relatedLabel": "Catégories connexes",
+      "tipTitle": "Comment utiliser",
+      "tip1": "Cherchez des entreprises sur Google Maps",
+      "tip2": "Copiez leur URL de site web",
+      "tip3": "Ajoutez-les comme concurrent",
+      "noLocation": "Entrez un lieu ci-dessus.",
+      "mapsQueryNote": "Ouvre une recherche Google Maps pré-remplie."
     }
   },
   "landing": {

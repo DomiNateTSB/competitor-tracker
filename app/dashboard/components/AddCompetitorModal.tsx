@@ -27,9 +27,15 @@ interface ModalLabels {
 export default function AddCompetitorModal({
   labels,
   categoryLabels,
+  externalOpen,
+  defaultCategory,
+  onExternalClose,
 }: {
   labels: ModalLabels
   categoryLabels: Record<string, string>
+  externalOpen?: boolean
+  defaultCategory?: string | null
+  onExternalClose?: () => void
 }) {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -40,9 +46,18 @@ export default function AddCompetitorModal({
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [searching, setSearching] = useState(false)
   const [websiteUrl, setWebsiteUrl] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('')
 
   const formRef = useRef<HTMLFormElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Sync external open state
+  useEffect(() => {
+    if (externalOpen) {
+      setOpen(true)
+      setSelectedCategory(defaultCategory ?? '')
+    }
+  }, [externalOpen, defaultCategory])
 
   useEffect(() => {
     if (nameInput.length < 3) {
@@ -78,8 +93,10 @@ export default function AddCompetitorModal({
     setError(null)
     setNameInput('')
     setWebsiteUrl('')
+    setSelectedCategory('')
     setSuggestions([])
     setShowSuggestions(false)
+    onExternalClose?.()
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -181,7 +198,7 @@ export default function AddCompetitorModal({
 
               <div>
                 <label className={labelClass}>{labels.category}</label>
-                <select name="category"
+                <select name="category" value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}
                   className="w-full px-3 py-2.5 border border-[#182b45] rounded-lg text-[13px] text-[#dce8ff] bg-[#071018] focus:outline-none focus:ring-2 focus:ring-[#4f74ff]/30 focus:border-[#4f74ff] transition-colors"
                   style={{ colorScheme: 'dark' }}>
                   <option value="">{labels.selectCategory}</option>
