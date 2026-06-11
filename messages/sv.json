@@ -63,7 +63,8 @@
       "emptyTitle": "Inga konkurrenter ännu",
       "emptySubtitle": "Lägg till en konkurrent för att börja övervaka deras webbplats.",
       "change": "ändring",
-      "changes": "ändringar"
+      "changes": "ändringar",
+      "last30Days": "Ändringar senaste 30 dagarna"
     },
     "activity": {
       "title": "Aktivitet",
@@ -166,6 +167,8 @@
     "ctaTitle": "Redo att hålla dig ett steg före?",
     "ctaSubtitle": "Gå med företag som redan spårar sina konkurrenter automatiskt.",
     "ctaButton": "Börja gratis",
-    "copyright": "Alla rättigheter förbehållna"
+    "copyright": "Alla rättigheter förbehållna",
+    "terms": "Användarvillkor",
+    "privacy": "Integritetspolicy"
   }
 }

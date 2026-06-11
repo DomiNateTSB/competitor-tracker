@@ -63,7 +63,8 @@
       "emptyTitle": "Sin competidores aún",
       "emptySubtitle": "Agrega un competidor para comenzar a monitorear su sitio web.",
       "change": "cambio",
-      "changes": "cambios"
+      "changes": "cambios",
+      "last30Days": "Cambios en los últimos 30 días"
     },
     "activity": {
       "title": "Actividad",
@@ -166,6 +167,8 @@
     "ctaTitle": "¿Listo para mantenerte un paso adelante?",
     "ctaSubtitle": "Únete a negocios que ya rastrean a sus competidores automáticamente.",
     "ctaButton": "Empezar gratis",
-    "copyright": "Todos los derechos reservados"
+    "copyright": "Todos los derechos reservados",
+    "terms": "Términos",
+    "privacy": "Privacidad"
   }
 }

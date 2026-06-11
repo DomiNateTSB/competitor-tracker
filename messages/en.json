@@ -63,7 +63,8 @@
       "emptyTitle": "No competitors yet",
       "emptySubtitle": "Add a competitor to start monitoring their website for changes.",
       "change": "change",
-      "changes": "changes"
+      "changes": "changes",
+      "last30Days": "Changes last 30 days"
     },
     "activity": {
       "title": "Activity",
@@ -166,6 +167,8 @@
     "ctaTitle": "Ready to stay one step ahead?",
     "ctaSubtitle": "Join businesses already tracking their competitors automatically.",
     "ctaButton": "Start for free",
-    "copyright": "All rights reserved"
+    "copyright": "All rights reserved",
+    "terms": "Terms",
+    "privacy": "Privacy"
   }
 }

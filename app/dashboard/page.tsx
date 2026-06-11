@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import AddCompetitorModal from '@/app/dashboard/components/AddCompetitorModal'
 import CompetitorCard from '@/app/dashboard/components/CompetitorCard'
+import OnboardingBanner from '@/app/dashboard/components/OnboardingBanner'
+import ActivityChart from '@/app/dashboard/components/ActivityChart'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -21,7 +23,21 @@ export default async function DashboardPage() {
     .order('created_at', { ascending: false })
 
   const competitorIds = competitors?.map(c => c.id) ?? []
+
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29)
+
   const { data: events } = competitorIds.length > 0
+    ? await supabase
+        .from('change_events')
+        .select('*')
+        .in('competitor_id', competitorIds)
+        .gte('detected_at', thirtyDaysAgo.toISOString())
+        .order('detected_at', { ascending: false })
+        .limit(500)
+    : { data: [] }
+
+  const { data: allEvents } = competitorIds.length > 0
     ? await supabase
         .from('change_events')
         .select('*')
@@ -30,14 +46,31 @@ export default async function DashboardPage() {
         .limit(100)
     : { data: [] }
 
-  const eventsByCompetitor = (events ?? []).reduce((acc, e) => {
+  const eventsByCompetitor = (allEvents ?? []).reduce((acc, e) => {
     acc[e.competitor_id] = acc[e.competitor_id] ?? []
     acc[e.competitor_id].push(e)
     return acc
-  }, {} as Record<string, typeof events>)
+  }, {} as Record<string, typeof allEvents>)
 
-  const totalChanges = (events ?? []).length
+  const totalChanges = (allEvents ?? []).length
   const checkedCount = competitors?.filter(c => c.last_checked_at).length ?? 0
+
+  // Build 30-day chart data
+  const countByDay: Record<string, number> = {}
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date()
+    d.setDate(d.getDate() - i)
+    countByDay[d.toISOString().slice(0, 10)] = 0
+  }
+  for (const e of events ?? []) {
+    const day = e.detected_at.slice(0, 10)
+    if (day in countByDay) countByDay[day]++
+  }
+  const chartData = Object.entries(countByDay).map(([fullDate, count]) => {
+    const d = new Date(fullDate)
+    const date = d.toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })
+    return { date, count, fullDate }
+  })
 
   const cardLabels = {
     checkNow: t('checkNow'),
@@ -51,33 +84,21 @@ export default async function DashboardPage() {
   }
 
   const categoryLabels = {
-    restaurant: tc('restaurant'),
-    salon: tc('salon'),
-    dentist: tc('dentist'),
-    car_repair: tc('car_repair'),
-    gym: tc('gym'),
-    real_estate: tc('real_estate'),
-    retail: tc('retail'),
-    construction: tc('construction'),
-    electrician: tc('electrician'),
-    plumber: tc('plumber'),
-    other: tc('other'),
+    restaurant: tc('restaurant'), salon: tc('salon'), dentist: tc('dentist'),
+    car_repair: tc('car_repair'), gym: tc('gym'), real_estate: tc('real_estate'),
+    retail: tc('retail'), construction: tc('construction'), electrician: tc('electrician'),
+    plumber: tc('plumber'), other: tc('other'),
   }
 
   const modalLabels = {
-    button: t('addCompetitor'),
-    title: tm('title'),
-    subtitle: tm('subtitle'),
-    businessName: tm('businessName'),
-    websiteUrl: tm('websiteUrl'),
-    googleMapsUrl: tm('googleMapsUrl'),
-    googleMapsHint: tm('googleMapsHint'),
-    category: tm('category'),
-    selectCategory: tm('selectCategory'),
-    cancel: tm('cancel'),
-    add: tm('add'),
-    adding: tm('adding'),
+    button: t('addCompetitor'), title: tm('title'), subtitle: tm('subtitle'),
+    businessName: tm('businessName'), websiteUrl: tm('websiteUrl'),
+    googleMapsUrl: tm('googleMapsUrl'), googleMapsHint: tm('googleMapsHint'),
+    category: tm('category'), selectCategory: tm('selectCategory'),
+    cancel: tm('cancel'), add: tm('add'), adding: tm('adding'),
   }
+
+  const hasCompetitors = (competitors?.length ?? 0) > 0
 
   return (
     <div className="px-8 py-8 max-w-4xl">
@@ -89,15 +110,20 @@ export default async function DashboardPage() {
         <AddCompetitorModal labels={modalLabels} categoryLabels={categoryLabels} />
       </div>
 
-      {(competitors?.length ?? 0) > 0 && (
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <StatCard label={t('tracked')} value={competitors?.length ?? 0} />
-          <StatCard label={t('checked')} value={checkedCount} />
-          <StatCard label={t('changesDetected')} value={totalChanges} highlight={totalChanges > 0} />
-        </div>
+      {!hasCompetitors && <OnboardingBanner />}
+
+      {hasCompetitors && (
+        <>
+          <div className="grid grid-cols-3 gap-4 mb-5">
+            <StatCard label={t('tracked')} value={competitors?.length ?? 0} />
+            <StatCard label={t('checked')} value={checkedCount} />
+            <StatCard label={t('changesDetected')} value={totalChanges} highlight={totalChanges > 0} />
+          </div>
+          <ActivityChart data={chartData} label={t('last30Days')} />
+        </>
       )}
 
-      {!competitors || competitors.length === 0 ? (
+      {!hasCompetitors ? (
         <EmptyState
           title={t('emptyTitle')}
           subtitle={t('emptySubtitle')}
@@ -106,7 +132,7 @@ export default async function DashboardPage() {
         />
       ) : (
         <div className="space-y-3">
-          {competitors.map((c) => (
+          {competitors!.map((c) => (
             <CompetitorCard
               key={c.id}
               competitor={c}

@@ -63,7 +63,8 @@
       "emptyTitle": "Brak konkurentów",
       "emptySubtitle": "Dodaj konkurenta, aby rozpocząć monitorowanie ich strony.",
       "change": "zmiana",
-      "changes": "zmiany"
+      "changes": "zmiany",
+      "last30Days": "Zmiany w ciągu ostatnich 30 dni"
     },
     "activity": {
       "title": "Aktywność",
@@ -166,6 +167,8 @@
     "ctaTitle": "Gotowy, by być o krok do przodu?",
     "ctaSubtitle": "Dołącz do firm, które już automatycznie śledzą swoich konkurentów.",
     "ctaButton": "Zacznij za darmo",
-    "copyright": "Wszelkie prawa zastrzeżone"
+    "copyright": "Wszelkie prawa zastrzeżone",
+    "terms": "Regulamin",
+    "privacy": "Prywatność"
   }
 }

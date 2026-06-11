@@ -7,9 +7,33 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://local-competitor-tracker.vercel.app'
+
 export const metadata: Metadata = {
-  title: "Local Competitor Tracker",
-  description: "Monitor your competitors automatically",
+  title: {
+    default: "Competitor Tracker — Monitor your competitors automatically",
+    template: "%s — Competitor Tracker",
+  },
+  description: "Automatically monitor your competitors' websites and get alerted the moment something changes — prices, offers, content, anything.",
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: "Competitor Tracker",
+    description: "Automatically monitor your competitors' websites and get alerted the moment something changes.",
+    url: siteUrl,
+    siteName: "Competitor Tracker",
+    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "Competitor Tracker" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Competitor Tracker",
+    description: "Automatically monitor your competitors' websites and get alerted the moment something changes.",
+    images: ["/og-image.svg"],
+  },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

@@ -63,7 +63,8 @@
       "emptyTitle": "Nessun concorrente ancora",
       "emptySubtitle": "Aggiungi un concorrente per iniziare a monitorare il suo sito.",
       "change": "modifica",
-      "changes": "modifiche"
+      "changes": "modifiche",
+      "last30Days": "Modifiche negli ultimi 30 giorni"
     },
     "activity": {
       "title": "Attività",
@@ -166,6 +167,8 @@
     "ctaTitle": "Pronto a restare un passo avanti?",
     "ctaSubtitle": "Unisciti alle aziende che già tracciano automaticamente i loro concorrenti.",
     "ctaButton": "Inizia gratuitamente",
-    "copyright": "Tutti i diritti riservati"
+    "copyright": "Tutti i diritti riservati",
+    "terms": "Termini",
+    "privacy": "Privacy"
   }
 }

@@ -120,7 +120,11 @@ export default async function LandingPage() {
             </div>
             <span className="text-[13px] font-medium text-[#4d6a8a]">Competitor Tracker</span>
           </div>
-          <p className="text-[12px] text-[#364f6e]">© {new Date().getFullYear()} {t('copyright')}</p>
+          <div className="flex items-center gap-4">
+            <p className="text-[12px] text-[#364f6e]">© {new Date().getFullYear()} {t('copyright')}</p>
+            <Link href="/terms" className="text-[12px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors">{t('terms')}</Link>
+            <Link href="/privacy" className="text-[12px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors">{t('privacy')}</Link>
+          </div>
         </div>
       </footer>
     </div>

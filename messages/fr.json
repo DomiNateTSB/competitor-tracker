@@ -63,7 +63,8 @@
       "emptyTitle": "Aucun concurrent pour l'instant",
       "emptySubtitle": "Ajoutez un concurrent pour commencer à surveiller leur site web.",
       "change": "changement",
-      "changes": "changements"
+      "changes": "changements",
+      "last30Days": "Changements sur 30 jours"
     },
     "activity": {
       "title": "Activité",
@@ -166,6 +167,8 @@
     "ctaTitle": "Prêt à garder une longueur d'avance ?",
     "ctaSubtitle": "Rejoignez les entreprises qui suivent déjà leurs concurrents automatiquement.",
     "ctaButton": "Commencer gratuitement",
-    "copyright": "Tous droits réservés"
+    "copyright": "Tous droits réservés",
+    "terms": "CGU",
+    "privacy": "Confidentialité"
   }
 }

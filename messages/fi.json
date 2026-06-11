@@ -63,7 +63,8 @@
       "emptyTitle": "Ei kilpailijoita vielä",
       "emptySubtitle": "Lisää kilpailija aloittaaksesi verkkosivun seurannan.",
       "change": "muutos",
-      "changes": "muutosta"
+      "changes": "muutosta",
+      "last30Days": "Muutokset viimeisen 30 päivän aikana"
     },
     "activity": {
       "title": "Toiminta",
@@ -166,6 +167,8 @@
     "ctaTitle": "Valmis pysymään askeleen edellä?",
     "ctaSubtitle": "Liity yrityksiin, jotka jo seuraavat kilpailijoitaan automaattisesti.",
     "ctaButton": "Aloita ilmaiseksi",
-    "copyright": "Kaikki oikeudet pidätetään"
+    "copyright": "Kaikki oikeudet pidätetään",
+    "terms": "Käyttöehdot",
+    "privacy": "Tietosuoja"
   }
 }

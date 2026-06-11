@@ -63,7 +63,8 @@
       "emptyTitle": "Nog geen concurrenten",
       "emptySubtitle": "Voeg een concurrent toe om hun website te monitoren.",
       "change": "wijziging",
-      "changes": "wijzigingen"
+      "changes": "wijzigingen",
+      "last30Days": "Wijzigingen afgelopen 30 dagen"
     },
     "activity": {
       "title": "Activiteit",
@@ -166,6 +167,8 @@
     "ctaTitle": "Klaar om een stap voor te zijn?",
     "ctaSubtitle": "Sluit je aan bij bedrijven die hun concurrenten al automatisch volgen.",
     "ctaButton": "Gratis beginnen",
-    "copyright": "Alle rechten voorbehouden"
+    "copyright": "Alle rechten voorbehouden",
+    "terms": "Voorwaarden",
+    "privacy": "Privacy"
   }
 }
