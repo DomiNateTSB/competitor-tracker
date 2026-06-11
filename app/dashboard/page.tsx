@@ -81,6 +81,9 @@ export default async function DashboardPage() {
     checkedOn: t('checkedOn'),
     change: t('change'),
     changes: t('changes'),
+    diff: t('diff'),
+    removed: t('removed'),
+    added: t('added'),
   }
 
   const categoryLabels = {

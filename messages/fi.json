@@ -65,7 +65,10 @@
       "emptySubtitle": "Lisää kilpailija aloittaaksesi verkkosivun seurannan.",
       "change": "muutos",
       "changes": "muutosta",
-      "last30Days": "Muutokset viimeisen 30 päivän aikana"
+      "last30Days": "Muutokset viimeisen 30 päivän aikana",
+      "diff": "Diff",
+      "removed": "Poistettu",
+      "added": "Lisätty"
     },
     "activity": {
       "title": "Toiminta",
@@ -128,6 +131,31 @@
       "cancel": "Peruuta",
       "successEmail": "Tarkista sähköpostisi vahvistaaksesi muutoksen.",
       "successPassword": "Salasana päivitetty."
+    },
+    "detail": {
+      "back": "Takaisin kojelautaan",
+      "exportCsv": "Vie CSV",
+      "totalChanges": "Muutokset yhteensä",
+      "lastChecked": "Viimeksi tarkistettu",
+      "trackingSince": "Seuranta alkaen",
+      "historyTitle": "Muutoshistoria",
+      "showDiff": "Näytä diff",
+      "hideDiff": "Piilota diff",
+      "removed": "Poistettu",
+      "added": "Lisätty",
+      "changeRatio": "Muutossuhde",
+      "never": "Ei koskaan",
+      "noChangesTitle": "Muutoksia ei havaittu",
+      "noChangesDesc": "Tämän kilpailijan verkkosivusto ei ole muuttunut. Ilmoitamme sinulle, kun jotain muuttuu.",
+      "firstCheckTitle": "Suorita ensimmäinen tarkistus",
+      "firstCheckDesc": "Napsauta Tarkista nyt skannataksesi sivuston ja luodaksesi perusviivan.",
+      "step1": "Skannaa sivusto",
+      "step2": "Aseta perusviiva",
+      "step3": "Havaitse muutokset",
+      "notes": "Muistiinpanot",
+      "notesSaving": "Tallennetaan...",
+      "notesSaved": "Tallennettu",
+      "notesPlaceholder": "Lisää yksityisiä muistiinpanoja tästä kilpailijasta..."
     }
   },
   "landing": {

@@ -65,7 +65,10 @@
       "emptySubtitle": "Legg til en konkurrent for å begynne å overvåke nettstedet deres.",
       "change": "endring",
       "changes": "endringer",
-      "last30Days": "Endringer siste 30 dager"
+      "last30Days": "Endringer siste 30 dager",
+      "diff": "Diff",
+      "removed": "Fjernet",
+      "added": "Lagt til"
     },
     "activity": {
       "title": "Aktivitet",
@@ -128,6 +131,31 @@
       "cancel": "Avbryt",
       "successEmail": "Sjekk e-posten din for å bekrefte endringen.",
       "successPassword": "Passordet er oppdatert."
+    },
+    "detail": {
+      "back": "Tilbake til dashbord",
+      "exportCsv": "Eksporter CSV",
+      "totalChanges": "Totale endringer",
+      "lastChecked": "Sist kontrollert",
+      "trackingSince": "Sporer siden",
+      "historyTitle": "Endringshistorikk",
+      "showDiff": "Vis diff",
+      "hideDiff": "Skjul diff",
+      "removed": "Fjernet",
+      "added": "Lagt til",
+      "changeRatio": "Endringsgrad",
+      "never": "Aldri",
+      "noChangesTitle": "Ingen endringer funnet",
+      "noChangesDesc": "Denne konkurrentens nettside har ikke endret seg. Vi varsler deg når noe endres.",
+      "firstCheckTitle": "Kjør din første sjekk",
+      "firstCheckDesc": "Klikk Sjekk nå for å skanne nettsiden og opprette en grunnlinje.",
+      "step1": "Skann nettside",
+      "step2": "Opprett grunnlinje",
+      "step3": "Finn endringer",
+      "notes": "Notater",
+      "notesSaving": "Lagrer...",
+      "notesSaved": "Lagret",
+      "notesPlaceholder": "Legg til private notater om denne konkurrenten..."
     }
   },
   "landing": {

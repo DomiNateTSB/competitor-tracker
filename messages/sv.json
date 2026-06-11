@@ -65,7 +65,10 @@
       "emptySubtitle": "Lägg till en konkurrent för att börja övervaka deras webbplats.",
       "change": "ändring",
       "changes": "ändringar",
-      "last30Days": "Ändringar senaste 30 dagarna"
+      "last30Days": "Ändringar senaste 30 dagarna",
+      "diff": "Diff",
+      "removed": "Borttaget",
+      "added": "Tillagt"
     },
     "activity": {
       "title": "Aktivitet",
@@ -128,6 +131,31 @@
       "cancel": "Avbryt",
       "successEmail": "Kolla din e-post för att bekräfta ändringen.",
       "successPassword": "Lösenordet har uppdaterats."
+    },
+    "detail": {
+      "back": "Tillbaka till dashboard",
+      "exportCsv": "Exportera CSV",
+      "totalChanges": "Totala ändringar",
+      "lastChecked": "Senast kontrollerad",
+      "trackingSince": "Spårar sedan",
+      "historyTitle": "Ändringshistorik",
+      "showDiff": "Visa diff",
+      "hideDiff": "Dölj diff",
+      "removed": "Borttaget",
+      "added": "Tillagt",
+      "changeRatio": "Förändringsgrad",
+      "never": "Aldrig",
+      "noChangesTitle": "Inga ändringar hittade",
+      "noChangesDesc": "Den här konkurrentens webbplats har inte ändrats. Vi meddelar dig när något förändras.",
+      "firstCheckTitle": "Kör din första kontroll",
+      "firstCheckDesc": "Klicka på Kontrollera nu för att skanna webbplatsen och sätta en baslinje. Framtida kontroller jämförs mot denna.",
+      "step1": "Skanna webbplats",
+      "step2": "Sätt baslinje",
+      "step3": "Hitta ändringar",
+      "notes": "Anteckningar",
+      "notesSaving": "Sparar...",
+      "notesSaved": "Sparat",
+      "notesPlaceholder": "Lägg till privata anteckningar om den här konkurrenten..."
     }
   },
   "landing": {

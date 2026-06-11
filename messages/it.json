@@ -65,7 +65,10 @@
       "emptySubtitle": "Aggiungi un concorrente per iniziare a monitorare il suo sito.",
       "change": "modifica",
       "changes": "modifiche",
-      "last30Days": "Modifiche negli ultimi 30 giorni"
+      "last30Days": "Modifiche negli ultimi 30 giorni",
+      "diff": "Diff",
+      "removed": "Rimosso",
+      "added": "Aggiunto"
     },
     "activity": {
       "title": "Attività",
@@ -128,6 +131,31 @@
       "cancel": "Annulla",
       "successEmail": "Controlla la tua e-mail per confermare la modifica.",
       "successPassword": "Password aggiornata con successo."
+    },
+    "detail": {
+      "back": "Torna alla dashboard",
+      "exportCsv": "Esporta CSV",
+      "totalChanges": "Modifiche totali",
+      "lastChecked": "Ultima verifica",
+      "trackingSince": "Monitoraggio da",
+      "historyTitle": "Cronologia modifiche",
+      "showDiff": "Mostra diff",
+      "hideDiff": "Nascondi diff",
+      "removed": "Rimosso",
+      "added": "Aggiunto",
+      "changeRatio": "Percentuale modifica",
+      "never": "Mai",
+      "noChangesTitle": "Nessuna modifica rilevata",
+      "noChangesDesc": "Il sito di questo concorrente non è cambiato. Ti avviseremo appena qualcosa cambierà.",
+      "firstCheckTitle": "Esegui il primo controllo",
+      "firstCheckDesc": "Fai clic su Controlla ora per scansionare il sito e stabilire una baseline.",
+      "step1": "Scansiona il sito",
+      "step2": "Stabilisci baseline",
+      "step3": "Rileva modifiche",
+      "notes": "Note",
+      "notesSaving": "Salvataggio...",
+      "notesSaved": "Salvato",
+      "notesPlaceholder": "Aggiungi note private su questo concorrente..."
     }
   },
   "landing": {

@@ -65,7 +65,10 @@
       "emptySubtitle": "Add a competitor to start monitoring their website for changes.",
       "change": "change",
       "changes": "changes",
-      "last30Days": "Changes last 30 days"
+      "last30Days": "Changes last 30 days",
+      "diff": "Diff",
+      "removed": "Removed",
+      "added": "Added"
     },
     "activity": {
       "title": "Activity",
@@ -128,6 +131,31 @@
       "cancel": "Cancel",
       "successEmail": "Check your email to confirm the change.",
       "successPassword": "Password updated successfully."
+    },
+    "detail": {
+      "back": "Back to dashboard",
+      "exportCsv": "Export CSV",
+      "totalChanges": "Total changes",
+      "lastChecked": "Last checked",
+      "trackingSince": "Tracking since",
+      "historyTitle": "Change history",
+      "showDiff": "Show diff",
+      "hideDiff": "Hide diff",
+      "removed": "Removed",
+      "added": "Added",
+      "changeRatio": "Change ratio",
+      "never": "Never",
+      "noChangesTitle": "No changes detected",
+      "noChangesDesc": "This competitor's website hasn't changed since you started tracking it. We'll notify you the moment something shifts.",
+      "firstCheckTitle": "Run your first check",
+      "firstCheckDesc": "Click Check now above to scan this competitor's website and establish a baseline. Future checks will compare against this snapshot.",
+      "step1": "Scan website",
+      "step2": "Set baseline",
+      "step3": "Detect changes",
+      "notes": "Notes",
+      "notesSaving": "Saving...",
+      "notesSaved": "Saved",
+      "notesPlaceholder": "Add private notes about this competitor..."
     }
   },
   "landing": {

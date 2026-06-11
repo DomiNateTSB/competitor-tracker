@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect, notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import CompetitorDetailView from './CompetitorDetailView'
 
 export default async function CompetitorDetailPage({
@@ -11,6 +12,9 @@ export default async function CompetitorDetailPage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/sign-in')
+
+  const t = await getTranslations('dashboard.detail')
+  const tc = await getTranslations('dashboard.competitors')
 
   const { data: competitor } = await supabase
     .from('competitors')
@@ -48,11 +52,25 @@ export default async function CompetitorDetailPage({
     }
   })
 
+  const labels = {
+    back: t('back'), exportCsv: t('exportCsv'), totalChanges: t('totalChanges'),
+    lastChecked: t('lastChecked'), trackingSince: t('trackingSince'),
+    historyTitle: t('historyTitle'), showDiff: t('showDiff'), hideDiff: t('hideDiff'),
+    removed: t('removed'), added: t('added'), changeRatio: t('changeRatio'),
+    never: t('never'), noChangesTitle: t('noChangesTitle'), noChangesDesc: t('noChangesDesc'),
+    firstCheckTitle: t('firstCheckTitle'), firstCheckDesc: t('firstCheckDesc'),
+    step1: t('step1'), step2: t('step2'), step3: t('step3'),
+    notes: t('notes'), notesSaving: t('notesSaving'), notesSaved: t('notesSaved'),
+    notesPlaceholder: t('notesPlaceholder'),
+    checkNow: tc('checkNow'), checking: tc('checking'),
+  }
+
   return (
     <CompetitorDetailView
       competitor={competitor}
       events={events ?? []}
       chartData={chartData}
+      labels={labels}
     />
   )
 }

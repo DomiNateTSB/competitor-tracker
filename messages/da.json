@@ -65,7 +65,10 @@
       "emptySubtitle": "Tilføj en konkurrent for at begynde at overvåge deres hjemmeside.",
       "change": "ændring",
       "changes": "ændringer",
-      "last30Days": "Ændringer de seneste 30 dage"
+      "last30Days": "Ændringer de seneste 30 dage",
+      "diff": "Diff",
+      "removed": "Fjernet",
+      "added": "Tilføjet"
     },
     "activity": {
       "title": "Aktivitet",
@@ -128,6 +131,31 @@
       "cancel": "Annuller",
       "successEmail": "Tjek din e-mail for at bekræfte ændringen.",
       "successPassword": "Adgangskoden er opdateret."
+    },
+    "detail": {
+      "back": "Tilbage til dashboard",
+      "exportCsv": "Eksporter CSV",
+      "totalChanges": "Samlede ændringer",
+      "lastChecked": "Sidst kontrolleret",
+      "trackingSince": "Sporer siden",
+      "historyTitle": "Ændringshistorik",
+      "showDiff": "Vis diff",
+      "hideDiff": "Skjul diff",
+      "removed": "Fjernet",
+      "added": "Tilføjet",
+      "changeRatio": "Ændringsgrad",
+      "never": "Aldrig",
+      "noChangesTitle": "Ingen ændringer fundet",
+      "noChangesDesc": "Denne konkurrents hjemmeside har ikke ændret sig. Vi giver dig besked, når noget ændres.",
+      "firstCheckTitle": "Kør din første kontrol",
+      "firstCheckDesc": "Klik på Kontrollér nu for at scanne hjemmesiden og oprette en baseline.",
+      "step1": "Scan hjemmeside",
+      "step2": "Opret baseline",
+      "step3": "Find ændringer",
+      "notes": "Noter",
+      "notesSaving": "Gemmer...",
+      "notesSaved": "Gemt",
+      "notesPlaceholder": "Tilføj private noter om denne konkurrent..."
     }
   },
   "landing": {

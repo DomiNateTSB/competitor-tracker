@@ -65,7 +65,10 @@
       "emptySubtitle": "Voeg een concurrent toe om hun website te monitoren.",
       "change": "wijziging",
       "changes": "wijzigingen",
-      "last30Days": "Wijzigingen afgelopen 30 dagen"
+      "last30Days": "Wijzigingen afgelopen 30 dagen",
+      "diff": "Diff",
+      "removed": "Verwijderd",
+      "added": "Toegevoegd"
     },
     "activity": {
       "title": "Activiteit",
@@ -128,6 +131,31 @@
       "cancel": "Annuleren",
       "successEmail": "Controleer uw e-mail om de wijziging te bevestigen.",
       "successPassword": "Wachtwoord succesvol bijgewerkt."
+    },
+    "detail": {
+      "back": "Terug naar dashboard",
+      "exportCsv": "CSV exporteren",
+      "totalChanges": "Totale wijzigingen",
+      "lastChecked": "Laatst gecontroleerd",
+      "trackingSince": "Gevolgd sinds",
+      "historyTitle": "Wijzigingsgeschiedenis",
+      "showDiff": "Diff tonen",
+      "hideDiff": "Diff verbergen",
+      "removed": "Verwijderd",
+      "added": "Toegevoegd",
+      "changeRatio": "Wijzigingsverhouding",
+      "never": "Nooit",
+      "noChangesTitle": "Geen wijzigingen gedetecteerd",
+      "noChangesDesc": "De website van deze concurrent is niet gewijzigd. We waarschuwen je zodra er iets verandert.",
+      "firstCheckTitle": "Voer de eerste controle uit",
+      "firstCheckDesc": "Klik op Nu controleren om de website te scannen en een basislijn in te stellen.",
+      "step1": "Website scannen",
+      "step2": "Basislijn instellen",
+      "step3": "Wijzigingen detecteren",
+      "notes": "Notities",
+      "notesSaving": "Opslaan...",
+      "notesSaved": "Opgeslagen",
+      "notesPlaceholder": "Voeg privénotities toe over deze concurrent..."
     }
   },
   "landing": {

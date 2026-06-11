@@ -65,7 +65,10 @@
       "emptySubtitle": "Füge einen Konkurrenten hinzu, um dessen Website zu überwachen.",
       "change": "Änderung",
       "changes": "Änderungen",
-      "last30Days": "Änderungen in den letzten 30 Tagen"
+      "last30Days": "Änderungen in den letzten 30 Tagen",
+      "diff": "Diff",
+      "removed": "Entfernt",
+      "added": "Hinzugefügt"
     },
     "activity": {
       "title": "Aktivität",
@@ -128,6 +131,31 @@
       "cancel": "Abbrechen",
       "successEmail": "Prüfen Sie Ihre E-Mail, um die Änderung zu bestätigen.",
       "successPassword": "Passwort erfolgreich aktualisiert."
+    },
+    "detail": {
+      "back": "Zurück zum Dashboard",
+      "exportCsv": "CSV exportieren",
+      "totalChanges": "Änderungen gesamt",
+      "lastChecked": "Zuletzt geprüft",
+      "trackingSince": "Beobachtet seit",
+      "historyTitle": "Änderungsverlauf",
+      "showDiff": "Diff anzeigen",
+      "hideDiff": "Diff ausblenden",
+      "removed": "Entfernt",
+      "added": "Hinzugefügt",
+      "changeRatio": "Änderungsrate",
+      "never": "Nie",
+      "noChangesTitle": "Keine Änderungen erkannt",
+      "noChangesDesc": "Die Website dieses Konkurrenten hat sich nicht verändert. Wir benachrichtigen Sie, sobald sich etwas ändert.",
+      "firstCheckTitle": "Ersten Check durchführen",
+      "firstCheckDesc": "Klicken Sie auf Jetzt prüfen, um die Website zu scannen und eine Baseline zu erstellen.",
+      "step1": "Website scannen",
+      "step2": "Baseline setzen",
+      "step3": "Änderungen erkennen",
+      "notes": "Notizen",
+      "notesSaving": "Speichern...",
+      "notesSaved": "Gespeichert",
+      "notesPlaceholder": "Private Notizen über diesen Konkurrenten hinzufügen..."
     }
   },
   "landing": {

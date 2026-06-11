@@ -65,7 +65,10 @@
       "emptySubtitle": "Dodaj konkurenta, aby rozpocząć monitorowanie ich strony.",
       "change": "zmiana",
       "changes": "zmiany",
-      "last30Days": "Zmiany w ciągu ostatnich 30 dni"
+      "last30Days": "Zmiany w ciągu ostatnich 30 dni",
+      "diff": "Diff",
+      "removed": "Usunięto",
+      "added": "Dodano"
     },
     "activity": {
       "title": "Aktywność",
@@ -128,6 +131,31 @@
       "cancel": "Anuluj",
       "successEmail": "Sprawdź e-mail, aby potwierdzić zmianę.",
       "successPassword": "Hasło zostało zaktualizowane."
+    },
+    "detail": {
+      "back": "Powrót do pulpitu",
+      "exportCsv": "Eksportuj CSV",
+      "totalChanges": "Łączne zmiany",
+      "lastChecked": "Ostatnio sprawdzono",
+      "trackingSince": "Śledzenie od",
+      "historyTitle": "Historia zmian",
+      "showDiff": "Pokaż diff",
+      "hideDiff": "Ukryj diff",
+      "removed": "Usunięto",
+      "added": "Dodano",
+      "changeRatio": "Współczynnik zmian",
+      "never": "Nigdy",
+      "noChangesTitle": "Nie wykryto zmian",
+      "noChangesDesc": "Strona tego konkurenta nie zmieniła się. Powiadomimy Cię, gdy coś się zmieni.",
+      "firstCheckTitle": "Uruchom pierwsze sprawdzanie",
+      "firstCheckDesc": "Kliknij Sprawdź teraz, aby zeskanować stronę i ustalić punkt odniesienia.",
+      "step1": "Skanuj stronę",
+      "step2": "Ustal punkt odniesienia",
+      "step3": "Wykryj zmiany",
+      "notes": "Notatki",
+      "notesSaving": "Zapisywanie...",
+      "notesSaved": "Zapisano",
+      "notesPlaceholder": "Dodaj prywatne notatki o tym konkurencie..."
     }
   },
   "landing": {
