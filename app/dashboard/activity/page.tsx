@@ -1,6 +1,15 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
+interface ChangeEvent {
+  id: string
+  competitor_id: string
+  event_type: string
+  severity: string
+  summary: string
+  detected_at: string
+}
+
 const severityConfig: Record<string, { dot: string; badge: string; label: string }> = {
   high: { dot: 'bg-red-500', badge: 'bg-red-50 text-red-700 border-red-100', label: 'High' },
   medium: { dot: 'bg-amber-400', badge: 'bg-amber-50 text-amber-700 border-amber-100', label: 'Medium' },
@@ -28,22 +37,30 @@ export default async function ActivityPage() {
     .eq('user_id', user.id)
     .eq('is_active', true)
 
-  const competitorIds = competitors?.map(c => c.id) ?? []
-  const competitorMap = Object.fromEntries((competitors ?? []).map(c => [c.id, c.name]))
+  const competitorIds = competitors?.map((c: { id: string }) => c.id) ?? []
+  const competitorMap: Record<string, string> = Object.fromEntries(
+    (competitors ?? []).map((c: { id: string; name: string }) => [c.id, c.name])
+  )
 
-  const { data: events } = competitorIds.length > 0
-    ? await supabase
-        .from('change_events')
-        .select('*')
-        .in('competitor_id', competitorIds)
-        .order('detected_at', { ascending: false })
-        .limit(200)
-    : { data: [] }
+  let events: ChangeEvent[] = []
 
-  type ChangeEvent = NonNullable<typeof events>[number]
-  const grouped = (events ?? []).reduce((acc, e) => {
-    const day = new Date(e.detected_at).toLocaleDateString('sv-SE', { day: 'numeric', month: 'long', year: 'numeric' })
-    acc[day] = acc[day] ?? []
+  if (competitorIds.length > 0) {
+    const { data } = await supabase
+      .from('change_events')
+      .select('*')
+      .in('competitor_id', competitorIds)
+      .order('detected_at', { ascending: false })
+      .limit(200)
+    events = (data ?? []) as ChangeEvent[]
+  }
+
+  const grouped: Record<string, ChangeEvent[]> = events.reduce((acc, e) => {
+    const day = new Date(e.detected_at).toLocaleDateString('sv-SE', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+    if (!acc[day]) acc[day] = []
     acc[day].push(e)
     return acc
   }, {} as Record<string, ChangeEvent[]>)
@@ -55,7 +72,7 @@ export default async function ActivityPage() {
         <p className="text-sm text-zinc-400 mt-0.5">All detected changes across your competitors</p>
       </div>
 
-      {!events || events.length === 0 ? (
+      {events.length === 0 ? (
         <div className="bg-white rounded-xl border border-zinc-200/80 p-14 text-center">
           <div className="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center mx-auto mb-4">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +90,7 @@ export default async function ActivityPage() {
             <div key={day}>
               <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-3">{day}</p>
               <div className="space-y-2">
-                {(dayEvents ?? []).map(event => {
+                {dayEvents.map(event => {
                   const cfg = severityConfig[event.severity] ?? severityConfig.low
                   const competitorName = competitorMap[event.competitor_id] ?? 'Unknown'
                   return (
