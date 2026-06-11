@@ -16,9 +16,7 @@ export default async function LandingPage() {
       <nav className="fixed top-0 inset-x-0 z-50 bg-[#07101f]/80 backdrop-blur-md border-b border-[#182b45]">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center">
-            <div className="bg-white rounded-lg px-2 py-1">
-              <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-7 w-auto object-contain" />
-            </div>
+            <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-9 w-auto object-contain" />
           </Link>
           <div className="flex items-center gap-3">
             <LanguageSwitcher currentLocale={locale} />
@@ -123,9 +121,7 @@ export default async function LandingPage() {
       <footer className="border-t border-[#182b45] py-8 px-6">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="bg-white rounded-md px-1.5 py-0.5">
-              <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-5 w-auto object-contain" />
-            </div>
+            <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-6 w-auto object-contain" />
           </div>
           <div className="flex items-center gap-4">
             <p className="text-[12px] text-[#364f6e]">© {new Date().getFullYear()} {t('copyright')}</p>

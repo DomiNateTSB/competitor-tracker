@@ -17,9 +17,7 @@ export default async function SignUpPage({
       <div className="w-full max-w-[360px]">
         <div className="flex items-center justify-center mb-8">
           <Link href="/">
-            <div className="bg-white rounded-xl px-4 py-2">
-              <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-10 w-auto object-contain" />
-            </div>
+            <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-12 w-auto object-contain" />
           </Link>
         </div>
 
