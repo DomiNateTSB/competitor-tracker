@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 interface ChangeEvent {
   id: string
@@ -10,10 +11,10 @@ interface ChangeEvent {
   detected_at: string
 }
 
-const severityConfig: Record<string, { dot: string; bg: string; border: string; text: string; label: string }> = {
-  high: { dot: 'bg-red-500', bg: 'bg-red-950/40', border: 'border-red-800/40', text: 'text-red-400', label: 'High' },
-  medium: { dot: 'bg-amber-400', bg: 'bg-amber-950/40', border: 'border-amber-700/40', text: 'text-amber-400', label: 'Medium' },
-  low: { dot: 'bg-blue-400', bg: 'bg-blue-950/40', border: 'border-blue-800/40', text: 'text-blue-400', label: 'Low' },
+const severityConfig: Record<string, { dot: string; bg: string; border: string; text: string }> = {
+  high: { dot: 'bg-red-500', bg: 'bg-red-950/40', border: 'border-red-800/40', text: 'text-red-400' },
+  medium: { dot: 'bg-amber-400', bg: 'bg-amber-950/40', border: 'border-amber-700/40', text: 'text-amber-400' },
+  low: { dot: 'bg-blue-400', bg: 'bg-blue-950/40', border: 'border-blue-800/40', text: 'text-blue-400' },
 }
 
 function formatDate(iso: string) {
@@ -26,6 +27,8 @@ export default async function ActivityPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/sign-in')
+
+  const t = await getTranslations('dashboard.activity')
 
   const { data: competitors } = await supabase
     .from('competitors')
@@ -59,11 +62,17 @@ export default async function ActivityPage() {
     return acc
   }, {} as Record<string, ChangeEvent[]>)
 
+  const severityLabels: Record<string, string> = {
+    high: t('high'),
+    medium: t('medium'),
+    low: t('low'),
+  }
+
   return (
     <div className="px-8 py-8 max-w-3xl">
       <div className="mb-8">
-        <h1 className="text-xl font-semibold text-[#dce8ff]">Activity</h1>
-        <p className="text-sm text-[#4d6a8a] mt-0.5">All detected changes across your competitors</p>
+        <h1 className="text-xl font-semibold text-[#dce8ff]">{t('title')}</h1>
+        <p className="text-sm text-[#4d6a8a] mt-0.5">{t('subtitle')}</p>
       </div>
 
       {events.length === 0 ? (
@@ -73,10 +82,8 @@ export default async function ActivityPage() {
               <polyline points="2,10 5,6 9,12 13,5 17,9" stroke="#364f6e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h3 className="text-base font-semibold text-[#dce8ff] mb-1">No activity yet</h3>
-          <p className="text-sm text-[#4d6a8a] max-w-xs mx-auto">
-            Changes will appear here once you start checking your competitors.
-          </p>
+          <h3 className="text-base font-semibold text-[#dce8ff] mb-1">{t('emptyTitle')}</h3>
+          <p className="text-sm text-[#4d6a8a] max-w-xs mx-auto">{t('emptySubtitle')}</p>
         </div>
       ) : (
         <div className="space-y-8">
@@ -94,7 +101,7 @@ export default async function ActivityPage() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className={`text-[13px] font-medium ${cfg.text}`}>{competitorName}</span>
                           <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${cfg.bg} ${cfg.border} ${cfg.text}`}>
-                            {cfg.label}
+                            {severityLabels[event.severity] ?? event.severity}
                           </span>
                         </div>
                         <p className={`text-[13px] mt-0.5 ${cfg.text} opacity-80`}>{event.summary}</p>

@@ -22,25 +22,24 @@ interface Competitor {
   last_checked_at: string | null
 }
 
-const categoryLabels: Record<string, string> = {
-  restaurant: 'Restaurant / Café',
-  salon: 'Hair salon',
-  dentist: 'Dentist',
-  car_repair: 'Car repair',
-  gym: 'Gym',
-  real_estate: 'Real estate',
-  retail: 'Retail',
-  construction: 'Construction',
-  electrician: 'Electrician',
-  plumber: 'Plumber',
-  other: 'Other',
+interface Labels {
+  checkNow: string
+  checking: string
+  viewChanges: string
+  hide: string
+  changeHistory: string
+  checkedOn: string
+  change: string
+  changes: string
 }
 
-const severityConfig: Record<string, { dot: string; bg: string; border: string; text: string; label: string }> = {
-  high: { dot: 'bg-red-500', bg: 'bg-red-950/40', border: 'border-red-800/40', text: 'text-red-400', label: 'High' },
-  medium: { dot: 'bg-amber-400', bg: 'bg-amber-950/40', border: 'border-amber-700/40', text: 'text-amber-400', label: 'Medium' },
-  low: { dot: 'bg-blue-400', bg: 'bg-blue-950/40', border: 'border-blue-800/40', text: 'text-blue-400', label: 'Low' },
+const severityConfig: Record<string, { dot: string; bg: string; border: string; text: string }> = {
+  high: { dot: 'bg-red-500', bg: 'bg-red-950/40', border: 'border-red-800/40', text: 'text-red-400' },
+  medium: { dot: 'bg-amber-400', bg: 'bg-amber-950/40', border: 'border-amber-700/40', text: 'text-amber-400' },
+  low: { dot: 'bg-blue-400', bg: 'bg-blue-950/40', border: 'border-blue-800/40', text: 'text-blue-400' },
 }
+
+const categoryKeys = ['restaurant','salon','dentist','car_repair','gym','real_estate','retail','construction','electrician','plumber','other']
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })
@@ -53,9 +52,13 @@ function getDomain(url: string) {
 export default function CompetitorCard({
   competitor,
   events,
+  labels,
+  categoryLabels,
 }: {
   competitor: Competitor
   events: ChangeEvent[]
+  labels: Labels
+  categoryLabels?: Record<string, string>
 }) {
   const [checking, setChecking] = useState(false)
   const [result, setResult] = useState<{ status: string; message: string } | null>(null)
@@ -79,6 +82,9 @@ export default function CompetitorCard({
 
   const recentEvents = events.slice(0, 5)
   const hasChanges = events.length > 0
+  const catLabel = competitor.category
+    ? (categoryLabels?.[competitor.category] ?? competitor.category)
+    : null
 
   return (
     <div className="bg-[#0b1628] rounded-xl border border-[#182b45] transition-colors hover:border-[#243d5c]">
@@ -93,14 +99,12 @@ export default function CompetitorCard({
             {hasChanges && (
               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-950/50 border border-amber-700/40 text-[10px] font-medium text-amber-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span>
-                {events.length} change{events.length !== 1 ? 's' : ''}
+                {events.length} {events.length !== 1 ? labels.changes : labels.change}
               </span>
             )}
           </div>
           <div className="flex items-center gap-3 mt-0.5">
-            {competitor.category && (
-              <span className="text-[12px] text-[#4d6a8a]">{categoryLabels[competitor.category] ?? competitor.category}</span>
-            )}
+            {catLabel && <span className="text-[12px] text-[#4d6a8a]">{catLabel}</span>}
             {competitor.website_url && (
               <a href={competitor.website_url} target="_blank" rel="noopener noreferrer"
                 className="text-[12px] text-[#4f74ff] hover:text-[#7a96ff] hover:underline transition-colors">
@@ -108,7 +112,7 @@ export default function CompetitorCard({
               </a>
             )}
             {competitor.last_checked_at && (
-              <span className="text-[12px] text-[#364f6e]">Checked {formatDate(competitor.last_checked_at)}</span>
+              <span className="text-[12px] text-[#364f6e]">{labels.checkedOn} {formatDate(competitor.last_checked_at)}</span>
             )}
           </div>
         </div>
@@ -117,7 +121,7 @@ export default function CompetitorCard({
           {hasChanges && (
             <button onClick={() => setExpanded(v => !v)}
               className="text-[12px] text-[#4d6a8a] hover:text-[#6b85aa] px-2.5 py-1.5 rounded-lg hover:bg-[#182b45] transition-colors">
-              {expanded ? 'Hide' : 'View changes'}
+              {expanded ? labels.hide : labels.viewChanges}
             </button>
           )}
           {competitor.website_url && (
@@ -126,13 +130,13 @@ export default function CompetitorCard({
               {checking ? (
                 <span className="flex items-center gap-1.5">
                   <span className="w-3 h-3 border-2 border-[#182b45] border-t-[#4f74ff] rounded-full animate-spin"></span>
-                  Checking
+                  {labels.checking}
                 </span>
-              ) : 'Check now'}
+              ) : labels.checkNow}
             </button>
           )}
           <form action={deleteCompetitor.bind(null, competitor.id)}>
-            <button type="submit" title="Remove competitor"
+            <button type="submit" title="Remove"
               className="w-7 h-7 flex items-center justify-center rounded-lg text-[#364f6e] hover:text-red-400 hover:bg-red-950/30 transition-colors">
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                 <path d="M2 3h9M5 3V2h3v1M4 3l.5 7.5h4L9 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -154,7 +158,7 @@ export default function CompetitorCard({
 
       {expanded && recentEvents.length > 0 && (
         <div className="border-t border-[#182b45] px-5 py-3 space-y-2">
-          <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest mb-2">Change history</p>
+          <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest mb-2">{labels.changeHistory}</p>
           {recentEvents.map(event => {
             const cfg = severityConfig[event.severity] ?? severityConfig.low
             return (
@@ -172,3 +176,5 @@ export default function CompetitorCard({
     </div>
   )
 }
+
+export { categoryKeys }

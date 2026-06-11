@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import AddCompetitorModal from '@/app/dashboard/components/AddCompetitorModal'
 import CompetitorCard from '@/app/dashboard/components/CompetitorCard'
 
@@ -7,6 +8,10 @@ export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/sign-in')
+
+  const t = await getTranslations('dashboard.competitors')
+  const tm = await getTranslations('dashboard.modal')
+  const tc = await getTranslations('dashboard.categories')
 
   const { data: competitors } = await supabase
     .from('competitors')
@@ -34,26 +39,71 @@ export default async function DashboardPage() {
   const totalChanges = (events ?? []).length
   const checkedCount = competitors?.filter(c => c.last_checked_at).length ?? 0
 
+  const cardLabels = {
+    checkNow: t('checkNow'),
+    checking: t('checking'),
+    viewChanges: t('viewChanges'),
+    hide: t('hide'),
+    changeHistory: t('changeHistory'),
+    checkedOn: t('checkedOn'),
+    change: t('change'),
+    changes: t('changes'),
+  }
+
+  const categoryLabels = {
+    restaurant: tc('restaurant'),
+    salon: tc('salon'),
+    dentist: tc('dentist'),
+    car_repair: tc('car_repair'),
+    gym: tc('gym'),
+    real_estate: tc('real_estate'),
+    retail: tc('retail'),
+    construction: tc('construction'),
+    electrician: tc('electrician'),
+    plumber: tc('plumber'),
+    other: tc('other'),
+  }
+
+  const modalLabels = {
+    button: t('addCompetitor'),
+    title: tm('title'),
+    subtitle: tm('subtitle'),
+    businessName: tm('businessName'),
+    websiteUrl: tm('websiteUrl'),
+    googleMapsUrl: tm('googleMapsUrl'),
+    googleMapsHint: tm('googleMapsHint'),
+    category: tm('category'),
+    selectCategory: tm('selectCategory'),
+    cancel: tm('cancel'),
+    add: tm('add'),
+    adding: tm('adding'),
+  }
+
   return (
     <div className="px-8 py-8 max-w-4xl">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-xl font-semibold text-[#dce8ff]">Competitors</h1>
-          <p className="text-sm text-[#4d6a8a] mt-0.5">Monitor website changes and updates</p>
+          <h1 className="text-xl font-semibold text-[#dce8ff]">{t('title')}</h1>
+          <p className="text-sm text-[#4d6a8a] mt-0.5">{t('subtitle')}</p>
         </div>
-        <AddCompetitorModal />
+        <AddCompetitorModal labels={modalLabels} categoryLabels={categoryLabels} />
       </div>
 
       {(competitors?.length ?? 0) > 0 && (
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <StatCard label="Tracked" value={competitors?.length ?? 0} />
-          <StatCard label="Checked" value={checkedCount} />
-          <StatCard label="Changes detected" value={totalChanges} highlight={totalChanges > 0} />
+          <StatCard label={t('tracked')} value={competitors?.length ?? 0} />
+          <StatCard label={t('checked')} value={checkedCount} />
+          <StatCard label={t('changesDetected')} value={totalChanges} highlight={totalChanges > 0} />
         </div>
       )}
 
       {!competitors || competitors.length === 0 ? (
-        <EmptyState />
+        <EmptyState
+          title={t('emptyTitle')}
+          subtitle={t('emptySubtitle')}
+          modalLabels={modalLabels}
+          categoryLabels={categoryLabels}
+        />
       ) : (
         <div className="space-y-3">
           {competitors.map((c) => (
@@ -61,6 +111,8 @@ export default async function DashboardPage() {
               key={c.id}
               competitor={c}
               events={eventsByCompetitor[c.id] ?? []}
+              labels={cardLabels}
+              categoryLabels={categoryLabels}
             />
           ))}
         </div>
@@ -78,7 +130,14 @@ function StatCard({ label, value, highlight }: { label: string; value: number; h
   )
 }
 
-function EmptyState() {
+function EmptyState({
+  title, subtitle, modalLabels, categoryLabels,
+}: {
+  title: string
+  subtitle: string
+  modalLabels: Parameters<typeof AddCompetitorModal>[0]['labels']
+  categoryLabels: Record<string, string>
+}) {
   return (
     <div className="bg-[#0b1628] rounded-xl border border-[#182b45] p-14 text-center">
       <div className="w-12 h-12 rounded-xl bg-[#071018] border border-[#182b45] flex items-center justify-center mx-auto mb-4">
@@ -87,11 +146,9 @@ function EmptyState() {
           <circle cx="12" cy="12" r="6" stroke="#364f6e" strokeWidth="1.5"/>
         </svg>
       </div>
-      <h3 className="text-base font-semibold text-[#dce8ff] mb-1">No competitors yet</h3>
-      <p className="text-sm text-[#4d6a8a] mb-6 max-w-xs mx-auto">
-        Add a competitor to start monitoring their website for changes.
-      </p>
-      <AddCompetitorModal />
+      <h3 className="text-base font-semibold text-[#dce8ff] mb-1">{title}</h3>
+      <p className="text-sm text-[#4d6a8a] mb-6 max-w-xs mx-auto">{subtitle}</p>
+      <AddCompetitorModal labels={modalLabels} categoryLabels={categoryLabels} />
     </div>
   )
 }

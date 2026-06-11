@@ -9,7 +9,28 @@ interface PlaceResult {
   website: string
 }
 
-export default function AddCompetitorModal() {
+interface ModalLabels {
+  button: string
+  title: string
+  subtitle: string
+  businessName: string
+  websiteUrl: string
+  googleMapsUrl: string
+  googleMapsHint: string
+  category: string
+  selectCategory: string
+  cancel: string
+  add: string
+  adding: string
+}
+
+export default function AddCompetitorModal({
+  labels,
+  categoryLabels,
+}: {
+  labels: ModalLabels
+  categoryLabels: Record<string, string>
+}) {
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -79,6 +100,8 @@ export default function AddCompetitorModal() {
   const inputClass = "w-full px-3 py-2.5 border border-[#182b45] rounded-lg text-[13px] text-[#dce8ff] bg-[#071018] placeholder-[#2d4a68] focus:outline-none focus:ring-2 focus:ring-[#4f74ff]/30 focus:border-[#4f74ff] transition-colors"
   const labelClass = "block text-[12px] font-medium text-[#6b85aa] mb-1.5"
 
+  const categoryKeys = ['restaurant','salon','dentist','car_repair','gym','real_estate','retail','construction','electrician','plumber','other']
+
   return (
     <>
       <button
@@ -88,7 +111,7 @@ export default function AddCompetitorModal() {
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
           <path d="M6 1v10M1 6h10" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
         </svg>
-        Add competitor
+        {labels.button}
       </button>
 
       {open && (
@@ -99,8 +122,8 @@ export default function AddCompetitorModal() {
           <div className="bg-[#0b1628] rounded-2xl w-full max-w-[440px] border border-[#182b45]">
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#182b45]">
               <div>
-                <h2 className="text-[15px] font-semibold text-[#dce8ff]">Add competitor</h2>
-                <p className="text-[12px] text-[#4d6a8a] mt-0.5">Track a business and monitor their website</p>
+                <h2 className="text-[15px] font-semibold text-[#dce8ff]">{labels.title}</h2>
+                <p className="text-[12px] text-[#4d6a8a] mt-0.5">{labels.subtitle}</p>
               </div>
               <button onClick={handleClose}
                 className="w-7 h-7 flex items-center justify-center rounded-lg text-[#4d6a8a] hover:text-[#dce8ff] hover:bg-[#182b45] transition-colors">
@@ -116,7 +139,7 @@ export default function AddCompetitorModal() {
               )}
 
               <div className="relative">
-                <label className={labelClass}>Business name <span className="text-red-400">*</span></label>
+                <label className={labelClass}>{labels.businessName} <span className="text-red-400">*</span></label>
                 <div className="relative">
                   <input name="name" type="text" required autoComplete="off" value={nameInput}
                     onChange={e => setNameInput(e.target.value)}
@@ -144,47 +167,38 @@ export default function AddCompetitorModal() {
               </div>
 
               <div>
-                <label className={labelClass}>Website URL</label>
+                <label className={labelClass}>{labels.websiteUrl}</label>
                 <input name="website_url" type="url" value={websiteUrl}
                   onChange={e => setWebsiteUrl(e.target.value)}
                   placeholder="https://example.se" className={inputClass} />
               </div>
 
               <div>
-                <label className={labelClass}>Google Maps URL</label>
+                <label className={labelClass}>{labels.googleMapsUrl}</label>
                 <input name="google_maps_url" type="url" placeholder="https://maps.google.com/..." className={inputClass} />
-                <p className="text-[11px] text-[#364f6e] mt-1.5 leading-relaxed">
-                  Used to track reviews. Copy the URL from Google Maps after searching the business.
-                </p>
+                <p className="text-[11px] text-[#364f6e] mt-1.5 leading-relaxed">{labels.googleMapsHint}</p>
               </div>
 
               <div>
-                <label className={labelClass}>Category</label>
+                <label className={labelClass}>{labels.category}</label>
                 <select name="category"
-                  className="w-full px-3 py-2.5 border border-[#182b45] rounded-lg text-[13px] text-[#dce8ff] bg-[#071018] focus:outline-none focus:ring-2 focus:ring-[#4f74ff]/30 focus:border-[#4f74ff] transition-colors">
-                  <option value="">Select a category</option>
-                  <option value="restaurant">Restaurant / Café</option>
-                  <option value="salon">Hair salon</option>
-                  <option value="dentist">Dentist</option>
-                  <option value="car_repair">Car repair</option>
-                  <option value="gym">Gym</option>
-                  <option value="real_estate">Real estate</option>
-                  <option value="retail">Retail</option>
-                  <option value="construction">Construction</option>
-                  <option value="electrician">Electrician</option>
-                  <option value="plumber">Plumber</option>
-                  <option value="other">Other</option>
+                  className="w-full px-3 py-2.5 border border-[#182b45] rounded-lg text-[13px] text-[#dce8ff] bg-[#071018] focus:outline-none focus:ring-2 focus:ring-[#4f74ff]/30 focus:border-[#4f74ff] transition-colors"
+                  style={{ colorScheme: 'dark' }}>
+                  <option value="">{labels.selectCategory}</option>
+                  {categoryKeys.map(key => (
+                    <option key={key} value={key}>{categoryLabels[key] ?? key}</option>
+                  ))}
                 </select>
               </div>
 
               <div className="flex gap-2.5 pt-2">
                 <button type="button" onClick={handleClose}
                   className="flex-1 px-4 py-2.5 border border-[#182b45] rounded-lg text-[13px] font-medium text-[#6b85aa] hover:bg-[#182b45] hover:text-[#dce8ff] transition-colors">
-                  Cancel
+                  {labels.cancel}
                 </button>
                 <button type="submit" disabled={loading}
                   className="flex-1 bg-[#4f74ff] hover:bg-[#3d63ee] text-white px-4 py-2.5 rounded-lg text-[13px] font-medium transition-colors disabled:opacity-50">
-                  {loading ? 'Adding...' : 'Add competitor'}
+                  {loading ? labels.adding : labels.add}
                 </button>
               </div>
             </form>
