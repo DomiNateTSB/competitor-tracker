@@ -100,10 +100,22 @@ export async function scrapeWebsite(url: string): Promise<ScrapeResult> {
     }
 
     // Normalise whitespace
-    const normalized = text.replace(/\s+/g, ' ').trim()
+    let normalized = text.replace(/\s+/g, ' ').trim()
 
-    // Ignore pages with almost no extractable text (JS-heavy SPAs, paywalls etc.)
-    if (normalized.length < 50) {
+    // Fallback: if targeted extraction yielded almost nothing, reload and grab full body
+    // with only script/style/meta stripped — catches sites where content sits in nav/footer
+    if (normalized.length < 100) {
+      const $2 = cheerio.load(html)
+      $2('script, style, noscript, iframe, svg, canvas, head').remove()
+      let fallback = $2('body').text()
+      for (const pattern of NOISE_PATTERNS) {
+        fallback = fallback.replace(pattern, ' ')
+      }
+      fallback = fallback.replace(/\s+/g, ' ').trim()
+      if (fallback.length > normalized.length) normalized = fallback
+    }
+
+    if (normalized.length < 30) {
       return { hash: '', textContent: '', error: 'Could not extract meaningful content from page' }
     }
 
@@ -132,7 +144,7 @@ export function detectChanges(
   const changeRatio = (added.length + removed.length) / totalLength
 
   // Ignore micro-changes — likely residual noise
-  if (changeRatio < 0.015) {
+  if (changeRatio < 0.004) {
     return { hasChanged: false, summary: 'Insignificant change ignored', severity: 'low', details: { added, removed, changeRatio } }
   }
 
