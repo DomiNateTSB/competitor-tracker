@@ -1,7 +1,7 @@
 import Sidebar from '@/app/dashboard/components/Sidebar'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
 
 export default async function DashboardLayout({
   children,
@@ -13,11 +13,13 @@ export default async function DashboardLayout({
   if (!user) redirect('/auth/sign-in')
 
   const t = await getTranslations('dashboard.nav')
+  const locale = await getLocale()
 
   return (
     <div className="flex h-screen bg-[#f7f8fa] overflow-hidden">
       <Sidebar
         email={user.email ?? ''}
+        currentLocale={locale}
         navLabels={{ competitors: t('competitors'), activity: t('activity') }}
       />
       <main className="flex-1 overflow-y-auto">

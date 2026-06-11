@@ -29,9 +29,16 @@ const nav = [
   },
 ]
 
-export default function Sidebar({ email, navLabels }: { email: string; navLabels?: { competitors: string; activity: string } }) {
+export default function Sidebar({
+  email,
+  currentLocale,
+  navLabels,
+}: {
+  email: string
+  currentLocale: string
+  navLabels?: { competitors: string; activity: string }
+}) {
   const pathname = usePathname()
-
   const initials = email.split('@')[0].slice(0, 2).toUpperCase()
 
   return (
@@ -69,7 +76,7 @@ export default function Sidebar({ email, navLabels }: { email: string; navLabels
 
       <div className="px-3 pb-3 space-y-2">
         <div className="px-2">
-          <LanguageSwitcher variant="subtle" />
+          <LanguageSwitcher currentLocale={currentLocale} variant="subtle" />
         </div>
         <div className="border-t border-zinc-100 pt-3 flex items-center gap-2.5 px-2 py-2 rounded-lg">
           <div className="w-7 h-7 rounded-full bg-zinc-100 flex items-center justify-center text-[11px] font-semibold text-zinc-600 shrink-0">

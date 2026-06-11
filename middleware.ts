@@ -2,10 +2,6 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/utils/supabase/middleware'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
-import createMiddleware from 'next-intl/middleware'
-import { routing } from '@/i18n/routing'
-
-const intlMiddleware = createMiddleware(routing)
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -24,7 +20,6 @@ const AUTH_SEGMENTS = ['sign-in', 'sign-up', 'forgot-password']
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Static / internal paths — skip everything
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api/') ||
@@ -36,7 +31,6 @@ export async function middleware(request: NextRequest) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '127.0.0.1'
   const isAuthPath = AUTH_SEGMENTS.some(s => pathname.includes(s))
 
-  // Rate limiting (skip if Upstash not configured)
   if (process.env.UPSTASH_REDIS_REST_URL) {
     try {
       const limiter = isAuthPath ? authRatelimit : ratelimit
@@ -64,11 +58,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Run intl middleware first (handles locale routing)
-  const intlResponse = intlMiddleware(request)
-  if (intlResponse && intlResponse.status !== 200) return intlResponse
-
-  // Then run Supabase session refresh
   return await updateSession(request)
 }
 

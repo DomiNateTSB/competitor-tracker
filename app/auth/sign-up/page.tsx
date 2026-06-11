@@ -1,6 +1,6 @@
 import { signUp } from '@/app/auth/actions'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 export default async function SignUpPage({
@@ -10,6 +10,7 @@ export default async function SignUpPage({
 }) {
   const { error, success } = await searchParams
   const t = await getTranslations('auth')
+  const locale = await getLocale()
 
   return (
     <div className="min-h-screen bg-[#f7f8fa] flex items-center justify-center p-4">
@@ -51,7 +52,7 @@ export default async function SignUpPage({
           <Link href="/auth/sign-in" className="text-indigo-600 hover:text-indigo-800 font-medium transition-colors">{t('signUp.signInLink')}</Link>
         </p>
         <div className="flex justify-center mt-4">
-          <LanguageSwitcher />
+          <LanguageSwitcher currentLocale={locale} />
         </div>
       </div>
     </div>

@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, getLocale } from 'next-intl/server'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 export default async function LandingPage() {
   const t = await getTranslations('landing')
   const nt = await getTranslations('nav')
+  const locale = await getLocale()
 
   return (
     <div className="min-h-screen bg-white text-zinc-900">
@@ -20,7 +21,7 @@ export default async function LandingPage() {
             <span className="text-[14px] font-semibold">Competitor Tracker</span>
           </div>
           <div className="flex items-center gap-3">
-            <LanguageSwitcher />
+            <LanguageSwitcher currentLocale={locale} />
             <Link href="/auth/sign-in" className="text-[13px] text-zinc-500 hover:text-zinc-900 transition-colors">{nt('signIn')}</Link>
             <Link href="/auth/sign-up" className="bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium px-4 py-2 rounded-lg transition-colors shadow-sm">{nt('getStartedFree')}</Link>
           </div>
