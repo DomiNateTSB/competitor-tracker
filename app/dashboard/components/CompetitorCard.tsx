@@ -143,7 +143,7 @@ export default function CompetitorCard({
 
   return (
     <div className="bg-[#0b1628] rounded-xl border border-[#182b45] transition-colors hover:border-[#243d5c]">
-      <div className="px-5 py-4 flex items-center gap-4">
+      <div className="px-4 sm:px-5 py-4 flex items-center gap-3 sm:gap-4">
         <div className="w-9 h-9 rounded-lg bg-[#4f74ff]/10 border border-[#4f74ff]/20 flex items-center justify-center text-[#4f74ff] font-semibold text-sm shrink-0">
           {competitor.name.charAt(0).toUpperCase()}
         </div>
@@ -184,7 +184,7 @@ export default function CompetitorCard({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {hasChanges && (
             <button onClick={() => setExpanded(v => !v)}
               className="text-[12px] text-[#4d6a8a] hover:text-[#6b85aa] px-2.5 py-1.5 rounded-lg hover:bg-[#182b45] transition-colors">

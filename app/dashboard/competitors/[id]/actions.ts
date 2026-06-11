@@ -73,3 +73,22 @@ export async function revokeShareToken(id: string): Promise<void> {
 
   revalidatePath(`/dashboard/competitors/${id}`)
 }
+
+export async function markEventReviewed(eventId: string): Promise<void> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  const { data: event } = await supabase
+    .from('change_events')
+    .select('competitor_id, competitors!inner(user_id)')
+    .eq('id', eventId)
+    .single()
+
+  if (!event) return
+
+  await supabase
+    .from('change_events')
+    .update({ reviewed_at: new Date().toISOString() })
+    .eq('id', eventId)
+}

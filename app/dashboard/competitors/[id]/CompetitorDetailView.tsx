@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ActivityChart from '@/app/dashboard/components/ActivityChart'
-import { updateNotes, updateAlertPrefs, generateShareToken, revokeShareToken } from './actions'
+import { updateNotes, updateAlertPrefs, generateShareToken, revokeShareToken, markEventReviewed } from './actions'
 
 interface ChangeEvent {
   id: string
@@ -12,6 +12,7 @@ interface ChangeEvent {
   severity: string
   summary: string
   detected_at: string
+  reviewed_at: string | null
   details: { added: string; removed: string; changeRatio: number } | null
 }
 
@@ -64,6 +65,9 @@ interface DetailLabels {
   share: string
   shareCopied: string
   shareRevoke: string
+  markReviewed: string
+  reviewed: string
+  loadMore: string
 }
 
 const severityConfig = {
@@ -106,13 +110,19 @@ function DiffView({ details, labels }: { details: { added: string; removed: stri
   )
 }
 
-function EventRow({ event, labels }: { event: ChangeEvent; labels: Pick<DetailLabels, 'showDiff' | 'hideDiff' | 'removed' | 'added' | 'changeRatio'> }) {
-  const [showDiff, setShowDiff] = useState(false)
-  const cfg = severityConfig[event.severity as keyof typeof severityConfig] ?? severityConfig.low
+function EventRow({ event, labels }: { event: ChangeEvent; labels: Pick<DetailLabels, 'showDiff' | 'hideDiff' | 'removed' | 'added' | 'changeRatio' | 'markReviewed' | 'reviewed'> }) {
+  const [showDiff,  setShowDiff]  = useState(false)
+  const [reviewed,  setReviewed]  = useState(!!event.reviewed_at)
+  const cfg    = severityConfig[event.severity as keyof typeof severityConfig] ?? severityConfig.low
   const hasDiff = event.details && (event.details.added || event.details.removed)
 
+  async function handleReview() {
+    setReviewed(true)
+    await markEventReviewed(event.id)
+  }
+
   return (
-    <div className={`rounded-xl border px-4 py-3.5 ${cfg.bg} ${cfg.border}`}>
+    <div className={`rounded-xl border px-4 py-3.5 transition-opacity ${reviewed ? 'opacity-50' : ''} ${cfg.bg} ${cfg.border}`}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span className={`w-2 h-2 rounded-full mt-[5px] shrink-0 ${cfg.dot}`} />
@@ -121,8 +131,18 @@ function EventRow({ event, labels }: { event: ChangeEvent; labels: Pick<DetailLa
             <p className="text-[12px] text-[#364f6e] mt-0.5">{formatDate(event.detected_at)}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
           <span className={`text-[10px] font-semibold uppercase tracking-wider ${cfg.text}`}>{cfg.badge}</span>
+          {!reviewed && (
+            <button
+              onClick={handleReview}
+              title={labels.markReviewed}
+              className="text-[11px] text-[#4d6a8a] hover:text-emerald-400 border border-[#182b45] hover:border-emerald-800/40 px-2 py-1 rounded-md transition-colors"
+            >
+              ✓
+            </button>
+          )}
+          {reviewed && <span className="text-[10px] text-emerald-500/60">{labels.reviewed}</span>}
           {hasDiff && (
             <button
               onClick={() => setShowDiff(v => !v)}
@@ -367,6 +387,8 @@ function exportCsv(events: ChangeEvent[], competitorName: string, removedLabel: 
   URL.revokeObjectURL(url)
 }
 
+const PAGE_SIZE = 10
+
 export default function CompetitorDetailView({
   competitor,
   events,
@@ -378,11 +400,13 @@ export default function CompetitorDetailView({
   chartData: { date: string; count: number; fullDate: string }[]
   labels: DetailLabels
 }) {
-  const [checking, setChecking] = useState(false)
-  const [result, setResult]     = useState<{ status: string; message: string } | null>(null)
+  const [checking,  setChecking]  = useState(false)
+  const [result,    setResult]    = useState<{ status: string; message: string } | null>(null)
+  const [visibleN,  setVisibleN]  = useState(PAGE_SIZE)
   const router = useRouter()
 
-  async function handleCheck() {
+  const handleCheck = useCallback(async () => {
+    if (checking) return
     setChecking(true)
     setResult(null)
     try {
@@ -395,12 +419,24 @@ export default function CompetitorDetailView({
     } finally {
       setChecking(false)
     }
-  }
+  }, [checking, competitor.id, router])
+
+  // Keyboard shortcut: R = check now
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const tag = (e.target as HTMLElement).tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || e.metaKey || e.ctrlKey) return
+      if (e.key === 'r' || e.key === 'R') handleCheck()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [handleCheck])
 
   const neverChecked = !competitor.last_checked_at
+  const visibleEvents = events.slice(0, visibleN)
 
   return (
-    <div className="px-8 py-8 max-w-4xl">
+    <div className="px-4 sm:px-8 py-8 max-w-4xl">
       {/* Back */}
       <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-[12px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors mb-5">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -410,7 +446,7 @@ export default function CompetitorDetailView({
       </Link>
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-xl bg-[#4f74ff]/10 border border-[#4f74ff]/20 flex items-center justify-center text-[#4f74ff] font-semibold text-base shrink-0">
             {competitor.name.charAt(0).toUpperCase()}
@@ -426,7 +462,7 @@ export default function CompetitorDetailView({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-2">
           <ShareSection
             competitorId={competitor.id}
             initialToken={competitor.share_token}
@@ -476,7 +512,7 @@ export default function CompetitorDetailView({
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
         <StatBlock label={labels.totalChanges}  value={events.length} highlight={events.length > 0} />
         <StatBlock label={labels.lastChecked}   value={competitor.last_checked_at ? formatDate(competitor.last_checked_at) : labels.never} />
         <StatBlock label={labels.trackingSince} value={formatDate(competitor.created_at)} />
@@ -494,9 +530,19 @@ export default function CompetitorDetailView({
         {events.length === 0
           ? <EmptyState neverChecked={neverChecked} labels={labels} />
           : (
-            <div className="space-y-2.5">
-              {events.map(event => <EventRow key={event.id} event={event} labels={labels} />)}
-            </div>
+            <>
+              <div className="space-y-2.5">
+                {visibleEvents.map(event => <EventRow key={event.id} event={event} labels={labels} />)}
+              </div>
+              {visibleN < events.length && (
+                <button
+                  onClick={() => setVisibleN(n => n + PAGE_SIZE)}
+                  className="mt-4 w-full py-2.5 text-[13px] text-[#4d6a8a] hover:text-[#dce8ff] border border-[#182b45] hover:border-[#243d5c] rounded-xl transition-colors"
+                >
+                  {labels.loadMore} ({events.length - visibleN})
+                </button>
+              )}
+            </>
           )
         }
       </div>

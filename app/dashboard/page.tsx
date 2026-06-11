@@ -2,16 +2,15 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import AddCompetitorModal from '@/app/dashboard/components/AddCompetitorModal'
-import CompetitorCard from '@/app/dashboard/components/CompetitorCard'
 import OnboardingBanner from '@/app/dashboard/components/OnboardingBanner'
-import ActivityChart from '@/app/dashboard/components/ActivityChart'
+import DashboardClient from '@/app/dashboard/components/DashboardClient'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/sign-in')
 
-  const t = await getTranslations('dashboard.competitors')
+  const t  = await getTranslations('dashboard.competitors')
   const tm = await getTranslations('dashboard.modal')
   const tc = await getTranslations('dashboard.categories')
 
@@ -43,7 +42,7 @@ export default async function DashboardPage() {
         .select('*')
         .in('competitor_id', competitorIds)
         .order('detected_at', { ascending: false })
-        .limit(100)
+        .limit(200)
     : { data: [] }
 
   const eventsByCompetitor = (allEvents ?? []).reduce((acc, e) => {
@@ -51,9 +50,6 @@ export default async function DashboardPage() {
     acc[e.competitor_id].push(e)
     return acc
   }, {} as Record<string, typeof allEvents>)
-
-  const totalChanges = (allEvents ?? []).length
-  const checkedCount = competitors?.filter(c => c.last_checked_at).length ?? 0
 
   // Build 30-day chart data
   const countByDay: Record<string, number> = {}
@@ -68,26 +64,8 @@ export default async function DashboardPage() {
   }
   const chartData = Object.entries(countByDay).map(([fullDate, count]) => {
     const d = new Date(fullDate)
-    const date = d.toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })
-    return { date, count, fullDate }
+    return { date: d.toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }), count, fullDate }
   })
-
-  const cardLabels = {
-    checkNow: t('checkNow'),
-    checking: t('checking'),
-    viewChanges: t('viewChanges'),
-    hide: t('hide'),
-    changeHistory: t('changeHistory'),
-    checkedOn: t('checkedOn'),
-    change: t('change'),
-    changes: t('changes'),
-    diff: t('diff'),
-    removed: t('removed'),
-    added: t('added'),
-    statusOk: t('statusOk'),
-    statusError: t('statusError'),
-    statusNever: t('statusNever'),
-  }
 
   const categoryLabels = {
     restaurant: tc('restaurant'), salon: tc('salon'), dentist: tc('dentist'),
@@ -104,10 +82,27 @@ export default async function DashboardPage() {
     cancel: tm('cancel'), add: tm('add'), adding: tm('adding'),
   }
 
+  const cardLabels = {
+    checkNow: t('checkNow'), checking: t('checking'), viewChanges: t('viewChanges'),
+    hide: t('hide'), changeHistory: t('changeHistory'), checkedOn: t('checkedOn'),
+    change: t('change'), changes: t('changes'), diff: t('diff'),
+    removed: t('removed'), added: t('added'),
+    statusOk: t('statusOk'), statusError: t('statusError'), statusNever: t('statusNever'),
+    checkAll: t('checkAll'), checkingAll: t('checkingAll'), allChecked: t('allChecked'),
+    search: t('search'), sortBy: t('sortBy'), sortRecent: t('sortRecent'),
+    sortChanged: t('sortChanged'), sortChecked: t('sortChecked'), sortName: t('sortName'),
+    filterAll: t('filterAll'), noResults: t('noResults'),
+    markReviewed: t('markReviewed'), reviewed: t('reviewed'), loadMore: t('loadMore'),
+    unreviewedChanges: t('unreviewedChanges'), activityLabel: t('activityLabel'),
+    notifTitle: t('notifTitle'), notifEmpty: t('notifEmpty'),
+    tracked: t('tracked'), checked: t('checked'), changesDetected: t('changesDetected'),
+    last30Days: t('last30Days'),
+  }
+
   const hasCompetitors = (competitors?.length ?? 0) > 0
 
   return (
-    <div className="px-8 py-8 max-w-4xl">
+    <div className="px-4 sm:px-8 py-8 max-w-4xl">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-xl font-semibold text-[#dce8ff]">{t('title')}</h1>
@@ -118,17 +113,6 @@ export default async function DashboardPage() {
 
       {!hasCompetitors && <OnboardingBanner />}
 
-      {hasCompetitors && (
-        <>
-          <div className="grid grid-cols-3 gap-4 mb-5">
-            <StatCard label={t('tracked')} value={competitors?.length ?? 0} />
-            <StatCard label={t('checked')} value={checkedCount} />
-            <StatCard label={t('changesDetected')} value={totalChanges} highlight={totalChanges > 0} />
-          </div>
-          <ActivityChart data={chartData} label={t('last30Days')} />
-        </>
-      )}
-
       {!hasCompetitors ? (
         <EmptyState
           title={t('emptyTitle')}
@@ -137,27 +121,17 @@ export default async function DashboardPage() {
           categoryLabels={categoryLabels}
         />
       ) : (
-        <div className="space-y-3">
-          {competitors!.map((c) => (
-            <CompetitorCard
-              key={c.id}
-              competitor={c}
-              events={eventsByCompetitor[c.id] ?? []}
-              labels={cardLabels}
-              categoryLabels={categoryLabels}
-            />
-          ))}
-        </div>
+        <DashboardClient
+          competitors={competitors ?? []}
+          eventsByCompetitor={eventsByCompetitor as Record<string, never>}
+          allEvents={allEvents ?? []}
+          chartData={chartData}
+          categoryLabels={categoryLabels}
+          cardLabels={cardLabels}
+          labels={cardLabels}
+          statLabels={{ tracked: t('tracked'), checked: t('checked'), changesDetected: t('changesDetected'), last30Days: t('last30Days') }}
+        />
       )}
-    </div>
-  )
-}
-
-function StatCard({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
-  return (
-    <div className="bg-[#0b1628] rounded-xl border border-[#182b45] px-5 py-4">
-      <p className="text-[11px] font-medium text-[#364f6e] uppercase tracking-wider mb-1">{label}</p>
-      <p className={`text-2xl font-semibold ${highlight ? 'text-[#4f74ff]' : 'text-[#dce8ff]'}`}>{value}</p>
     </div>
   )
 }
