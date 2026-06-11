@@ -11,6 +11,7 @@ interface ChangeEvent {
   severity: string
   summary: string
   detected_at: string
+  details: { added: string; removed: string; changeRatio: number } | null
 }
 
 interface Competitor {
@@ -48,6 +49,52 @@ function formatDate(iso: string) {
 
 function getDomain(url: string) {
   try { return new URL(url).hostname.replace('www.', '') } catch { return url }
+}
+
+function EventRow({ event }: { event: ChangeEvent }) {
+  const [showDiff, setShowDiff] = useState(false)
+  const cfg = severityConfig[event.severity] ?? severityConfig.low
+  const hasDiff = event.details && (event.details.added || event.details.removed)
+
+  return (
+    <div className={`rounded-lg border px-3 py-2.5 ${cfg.bg} ${cfg.border}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-2.5">
+          <span className={`w-2 h-2 rounded-full mt-[4px] shrink-0 ${cfg.dot}`} />
+          <div>
+            <p className={`text-[13px] ${cfg.text}`}>{event.summary}</p>
+            <p className="text-[11px] text-[#364f6e] mt-0.5">{formatDate(event.detected_at)}</p>
+          </div>
+        </div>
+        {hasDiff && (
+          <button onClick={() => setShowDiff(v => !v)}
+            className="text-[11px] text-[#4d6a8a] hover:text-[#dce8ff] border border-[#182b45] hover:border-[#243d5c] px-2 py-0.5 rounded transition-colors shrink-0">
+            {showDiff ? 'Hide' : 'Diff'}
+          </button>
+        )}
+      </div>
+      {showDiff && event.details && (
+        <div className="mt-2 space-y-1.5">
+          {event.details.removed && (
+            <div className="bg-red-950/30 border border-red-900/40 rounded px-2.5 py-2">
+              <p className="text-[9px] font-semibold text-red-400/60 uppercase tracking-widest mb-1">Removed</p>
+              <p className="text-[11px] text-red-300/80 font-mono leading-relaxed break-words">
+                {event.details.removed.slice(0, 300)}{event.details.removed.length > 300 ? '…' : ''}
+              </p>
+            </div>
+          )}
+          {event.details.added && (
+            <div className="bg-emerald-950/30 border border-emerald-900/40 rounded px-2.5 py-2">
+              <p className="text-[9px] font-semibold text-emerald-400/60 uppercase tracking-widest mb-1">Added</p>
+              <p className="text-[11px] text-emerald-300/80 font-mono leading-relaxed break-words">
+                {event.details.added.slice(0, 300)}{event.details.added.length > 300 ? '…' : ''}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function CompetitorCard({
@@ -160,18 +207,9 @@ export default function CompetitorCard({
       {expanded && recentEvents.length > 0 && (
         <div className="border-t border-[#182b45] px-5 py-3 space-y-2">
           <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest mb-2">{labels.changeHistory}</p>
-          {recentEvents.map(event => {
-            const cfg = severityConfig[event.severity] ?? severityConfig.low
-            return (
-              <div key={event.id} className={`flex items-start gap-3 px-3 py-2.5 rounded-lg border ${cfg.bg} ${cfg.border}`}>
-                <span className={`w-2 h-2 rounded-full mt-1 shrink-0 ${cfg.dot}`}></span>
-                <div className="flex-1 min-w-0">
-                  <p className={`text-[13px] ${cfg.text}`}>{event.summary}</p>
-                  <p className="text-[11px] text-[#364f6e] mt-0.5">{formatDate(event.detected_at)}</p>
-                </div>
-              </div>
-            )
-          })}
+          {recentEvents.map(event => (
+            <EventRow key={event.id} event={event} />
+          ))}
         </div>
       )}
     </div>
