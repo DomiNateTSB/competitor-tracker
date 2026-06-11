@@ -41,7 +41,8 @@ export default function LanguageSwitcher({
         value={currentLocale}
         onChange={e => change(e.target.value)}
         disabled={pending}
-        className="text-[11px] text-zinc-400 bg-transparent border-none outline-none cursor-pointer hover:text-zinc-600 transition-colors w-full"
+        className="text-[11px] text-[#4d6a8a] bg-transparent border-none outline-none cursor-pointer hover:text-[#6b85aa] transition-colors w-full"
+        style={{ colorScheme: 'dark' }}
       >
         {locales.map(l => (
           <option key={l} value={l}>{localeFlags[l]} {localeNames[l]}</option>
@@ -54,7 +55,7 @@ export default function LanguageSwitcher({
     <div className="relative group">
       <button
         disabled={pending}
-        className="flex items-center gap-1.5 text-[12px] text-zinc-500 hover:text-zinc-800 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-100 disabled:opacity-50"
+        className="flex items-center gap-1.5 text-[12px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors px-2 py-1 rounded-lg hover:bg-[#182b45] disabled:opacity-50"
       >
         <span>{localeFlags[currentLocale]}</span>
         <span className="hidden sm:inline">{localeNames[currentLocale]}</span>
@@ -62,12 +63,12 @@ export default function LanguageSwitcher({
           <path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
-      <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-zinc-200 rounded-xl shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+      <div className="absolute right-0 top-full mt-1 w-44 bg-[#0b1628] border border-[#182b45] rounded-xl shadow-2xl py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
         {locales.map(l => (
           <button
             key={l}
             onClick={() => change(l)}
-            className={`w-full flex items-center gap-2.5 px-3 py-2 text-[13px] hover:bg-zinc-50 transition-colors text-left ${l === currentLocale ? 'text-indigo-600 font-medium' : 'text-zinc-700'}`}
+            className={`w-full flex items-center gap-2.5 px-3 py-2 text-[13px] hover:bg-[#182b45] transition-colors text-left ${l === currentLocale ? 'text-[#4f74ff] font-medium' : 'text-[#6b85aa]'}`}
           >
             <span>{localeFlags[l]}</span>
             {localeNames[l]}

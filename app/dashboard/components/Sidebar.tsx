@@ -42,16 +42,16 @@ export default function Sidebar({
   const initials = email.split('@')[0].slice(0, 2).toUpperCase()
 
   return (
-    <aside className="w-[220px] shrink-0 flex flex-col bg-white border-r border-zinc-200/80 h-full">
-      <div className="px-5 py-5 border-b border-zinc-100">
+    <aside className="w-[220px] shrink-0 flex flex-col bg-[#0b1628] border-r border-[#182b45] h-full">
+      <div className="px-5 py-5 border-b border-[#182b45]">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-[#4f74ff] flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <circle cx="5" cy="5" r="3.5" stroke="white" strokeWidth="1.5"/>
               <circle cx="9" cy="9" r="3.5" stroke="white" strokeWidth="1.5"/>
             </svg>
           </div>
-          <span className="text-[13px] font-semibold text-zinc-900 leading-tight">Competitor<br/>Tracker</span>
+          <span className="text-[13px] font-semibold text-[#dce8ff] leading-tight">Competitor<br/>Tracker</span>
         </div>
       </div>
 
@@ -64,10 +64,12 @@ export default function Sidebar({
               key={item.href}
               href={item.href}
               className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
-                active ? 'bg-indigo-50 text-indigo-700' : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50'
+                active
+                  ? 'bg-[#4f74ff]/15 text-[#7a96ff]'
+                  : 'text-[#4d6a8a] hover:text-[#dce8ff] hover:bg-[#182b45]'
               }`}
             >
-              <span className={active ? 'text-indigo-600' : 'text-zinc-400'}>{item.icon}</span>
+              <span className={active ? 'text-[#4f74ff]' : 'text-[#364f6e]'}>{item.icon}</span>
               {label}
             </Link>
           )
@@ -78,15 +80,15 @@ export default function Sidebar({
         <div className="px-2">
           <LanguageSwitcher currentLocale={currentLocale} variant="subtle" />
         </div>
-        <div className="border-t border-zinc-100 pt-3 flex items-center gap-2.5 px-2 py-2 rounded-lg">
-          <div className="w-7 h-7 rounded-full bg-zinc-100 flex items-center justify-center text-[11px] font-semibold text-zinc-600 shrink-0">
+        <div className="border-t border-[#182b45] pt-3 flex items-center gap-2.5 px-2 py-2 rounded-lg">
+          <div className="w-7 h-7 rounded-full bg-[#182b45] flex items-center justify-center text-[11px] font-semibold text-[#6b85aa] shrink-0">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[11px] text-zinc-400 truncate">{email}</p>
+            <p className="text-[11px] text-[#4d6a8a] truncate">{email}</p>
           </div>
           <form action={signOut}>
-            <button type="submit" title="Sign out" className="text-zinc-300 hover:text-zinc-500 transition-colors">
+            <button type="submit" title="Sign out" className="text-[#364f6e] hover:text-[#6b85aa] transition-colors">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M5 2H2.5C2.22 2 2 2.22 2 2.5v9c0 .28.22.5.5.5H5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
                 <path d="M9.5 9.5L12 7l-2.5-2.5M12 7H5.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>

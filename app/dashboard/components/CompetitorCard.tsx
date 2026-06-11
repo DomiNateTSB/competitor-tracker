@@ -36,22 +36,10 @@ const categoryLabels: Record<string, string> = {
   other: 'Other',
 }
 
-const severityConfig: Record<string, { dot: string; badge: string; label: string }> = {
-  high: {
-    dot: 'bg-red-500',
-    badge: 'bg-red-50 text-red-700 border-red-100',
-    label: 'High',
-  },
-  medium: {
-    dot: 'bg-amber-400',
-    badge: 'bg-amber-50 text-amber-700 border-amber-100',
-    label: 'Medium',
-  },
-  low: {
-    dot: 'bg-blue-400',
-    badge: 'bg-blue-50 text-blue-700 border-blue-100',
-    label: 'Low',
-  },
+const severityConfig: Record<string, { dot: string; bg: string; border: string; text: string; label: string }> = {
+  high: { dot: 'bg-red-500', bg: 'bg-red-950/40', border: 'border-red-800/40', text: 'text-red-400', label: 'High' },
+  medium: { dot: 'bg-amber-400', bg: 'bg-amber-950/40', border: 'border-amber-700/40', text: 'text-amber-400', label: 'Medium' },
+  low: { dot: 'bg-blue-400', bg: 'bg-blue-950/40', border: 'border-blue-800/40', text: 'text-blue-400', label: 'Low' },
 }
 
 function formatDate(iso: string) {
@@ -93,19 +81,17 @@ export default function CompetitorCard({
   const hasChanges = events.length > 0
 
   return (
-    <div className={`bg-white rounded-xl border transition-shadow ${hasChanges ? 'border-zinc-200/80 shadow-sm' : 'border-zinc-200/80'}`}>
+    <div className="bg-[#0b1628] rounded-xl border border-[#182b45] transition-colors hover:border-[#243d5c]">
       <div className="px-5 py-4 flex items-center gap-4">
-        {/* Avatar */}
-        <div className="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-semibold text-sm shrink-0 border border-indigo-100/60">
+        <div className="w-9 h-9 rounded-lg bg-[#4f74ff]/10 border border-[#4f74ff]/20 flex items-center justify-center text-[#4f74ff] font-semibold text-sm shrink-0">
           {competitor.name.charAt(0).toUpperCase()}
         </div>
 
-        {/* Info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <p className="text-[14px] font-medium text-zinc-900 truncate">{competitor.name}</p>
+            <p className="text-[14px] font-medium text-[#dce8ff] truncate">{competitor.name}</p>
             {hasChanges && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-50 border border-amber-100 text-[10px] font-medium text-amber-600">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-950/50 border border-amber-700/40 text-[10px] font-medium text-amber-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span>
                 {events.length} change{events.length !== 1 ? 's' : ''}
               </span>
@@ -113,57 +99,42 @@ export default function CompetitorCard({
           </div>
           <div className="flex items-center gap-3 mt-0.5">
             {competitor.category && (
-              <span className="text-[12px] text-zinc-400">{categoryLabels[competitor.category] ?? competitor.category}</span>
+              <span className="text-[12px] text-[#4d6a8a]">{categoryLabels[competitor.category] ?? competitor.category}</span>
             )}
             {competitor.website_url && (
-              <a
-                href={competitor.website_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[12px] text-indigo-500 hover:text-indigo-700 hover:underline transition-colors"
-              >
+              <a href={competitor.website_url} target="_blank" rel="noopener noreferrer"
+                className="text-[12px] text-[#4f74ff] hover:text-[#7a96ff] hover:underline transition-colors">
                 {getDomain(competitor.website_url)}
               </a>
             )}
             {competitor.last_checked_at && (
-              <span className="text-[12px] text-zinc-300">
-                Checked {formatDate(competitor.last_checked_at)}
-              </span>
+              <span className="text-[12px] text-[#364f6e]">Checked {formatDate(competitor.last_checked_at)}</span>
             )}
           </div>
         </div>
 
-        {/* Actions */}
         <div className="flex items-center gap-2 shrink-0">
           {hasChanges && (
-            <button
-              onClick={() => setExpanded(v => !v)}
-              className="text-[12px] text-zinc-400 hover:text-zinc-600 px-2.5 py-1.5 rounded-lg hover:bg-zinc-50 transition-colors"
-            >
+            <button onClick={() => setExpanded(v => !v)}
+              className="text-[12px] text-[#4d6a8a] hover:text-[#6b85aa] px-2.5 py-1.5 rounded-lg hover:bg-[#182b45] transition-colors">
               {expanded ? 'Hide' : 'View changes'}
             </button>
           )}
           {competitor.website_url && (
-            <button
-              onClick={handleCheck}
-              disabled={checking}
-              className="text-[12px] bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 text-zinc-600 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 font-medium"
-            >
+            <button onClick={handleCheck} disabled={checking}
+              className="text-[12px] bg-[#071018] hover:bg-[#182b45] border border-[#182b45] text-[#6b85aa] px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40 font-medium">
               {checking ? (
                 <span className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 border-2 border-zinc-300 border-t-zinc-600 rounded-full animate-spin"></span>
+                  <span className="w-3 h-3 border-2 border-[#182b45] border-t-[#4f74ff] rounded-full animate-spin"></span>
                   Checking
                 </span>
               ) : 'Check now'}
             </button>
           )}
           <form action={deleteCompetitor.bind(null, competitor.id)}>
-            <button
-              type="submit"
-              className="w-7 h-7 flex items-center justify-center rounded-lg text-zinc-300 hover:text-red-400 hover:bg-red-50 transition-colors"
-              title="Remove competitor"
-            >
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button type="submit" title="Remove competitor"
+              className="w-7 h-7 flex items-center justify-center rounded-lg text-[#364f6e] hover:text-red-400 hover:bg-red-950/30 transition-colors">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
                 <path d="M2 3h9M5 3V2h3v1M4 3l.5 7.5h4L9 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
@@ -171,29 +142,27 @@ export default function CompetitorCard({
         </div>
       </div>
 
-      {/* Inline result */}
       {result && (
         <div className={`mx-5 mb-3 px-3 py-2 rounded-lg border text-[12px] font-medium ${
-          result.status === 'changed' ? 'bg-amber-50 border-amber-100 text-amber-700' :
-          result.status === 'error' ? 'bg-red-50 border-red-100 text-red-600' :
-          'bg-emerald-50 border-emerald-100 text-emerald-700'
+          result.status === 'changed' ? 'bg-amber-950/40 border-amber-700/40 text-amber-400' :
+          result.status === 'error' ? 'bg-red-950/40 border-red-800/40 text-red-400' :
+          'bg-emerald-950/40 border-emerald-700/40 text-emerald-400'
         }`}>
           {result.message}
         </div>
       )}
 
-      {/* Change events */}
       {expanded && recentEvents.length > 0 && (
-        <div className="border-t border-zinc-100 px-5 py-3 space-y-2">
-          <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-widest mb-2">Change history</p>
+        <div className="border-t border-[#182b45] px-5 py-3 space-y-2">
+          <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest mb-2">Change history</p>
           {recentEvents.map(event => {
             const cfg = severityConfig[event.severity] ?? severityConfig.low
             return (
-              <div key={event.id} className={`flex items-start gap-3 px-3 py-2.5 rounded-lg border ${cfg.badge}`}>
+              <div key={event.id} className={`flex items-start gap-3 px-3 py-2.5 rounded-lg border ${cfg.bg} ${cfg.border}`}>
                 <span className={`w-2 h-2 rounded-full mt-1 shrink-0 ${cfg.dot}`}></span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px]">{event.summary}</p>
-                  <p className="text-[11px] opacity-60 mt-0.5">{formatDate(event.detected_at)}</p>
+                  <p className={`text-[13px] ${cfg.text}`}>{event.summary}</p>
+                  <p className="text-[11px] text-[#364f6e] mt-0.5">{formatDate(event.detected_at)}</p>
                 </div>
               </div>
             )

@@ -16,7 +16,7 @@ export default async function DashboardLayout({
   const locale = await getLocale()
 
   return (
-    <div className="flex h-screen bg-[#f7f8fa] overflow-hidden">
+    <div className="flex h-screen bg-[#07101f] overflow-hidden">
       <Sidebar
         email={user.email ?? ''}
         currentLocale={locale}
