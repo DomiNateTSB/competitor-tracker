@@ -54,16 +54,12 @@ export default function Sidebar({
 
   return (
     <aside className="w-[220px] shrink-0 flex flex-col bg-[#0b1628] border-r border-[#182b45] h-full">
-      <div className="px-5 py-5 border-b border-[#182b45]">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#4f74ff] flex items-center justify-center">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <circle cx="5" cy="5" r="3.5" stroke="white" strokeWidth="1.5"/>
-              <circle cx="9" cy="9" r="3.5" stroke="white" strokeWidth="1.5"/>
-            </svg>
+      <div className="px-4 py-4 border-b border-[#182b45]">
+        <a href="/" className="block">
+          <div className="bg-white rounded-xl p-1.5 flex items-center justify-center">
+            <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-10 w-auto object-contain" />
           </div>
-          <span className="text-[13px] font-semibold text-[#dce8ff] leading-tight">Competitor<br/>Tracker</span>
-        </div>
+        </a>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-0.5">

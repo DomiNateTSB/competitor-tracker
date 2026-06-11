@@ -1,10 +1,11 @@
 {
   "nav": {
     "signIn": "Kirjaudu sisään",
-    "getStartedFree": "Aloita ilmaiseksi"
+    "getStartedFree": "Aloita ilmaiseksi",
+    "dashboard": "Dashboard"
   },
   "auth": {
-    "appName": "Competitor Tracker",
+    "appName": "Rivalkollen",
     "signIn": {
       "title": "Tervetuloa takaisin",
       "subtitle": "Kirjaudu tilillesi jatkaaksesi",

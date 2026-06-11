@@ -15,11 +15,12 @@ export default async function SignInPage({
   return (
     <div className="min-h-screen bg-[#07101f] flex items-center justify-center p-4">
       <div className="w-full max-w-[360px]">
-        <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="w-8 h-8 rounded-xl bg-[#4f74ff] flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="6" r="4" stroke="white" strokeWidth="1.5"/><circle cx="10" cy="10" r="4" stroke="white" strokeWidth="1.5"/></svg>
-          </div>
-          <span className="text-[15px] font-semibold text-[#dce8ff]">{t('appName')}</span>
+        <div className="flex items-center justify-center mb-8">
+          <Link href="/">
+            <div className="bg-white rounded-xl px-4 py-2">
+              <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-10 w-auto object-contain" />
+            </div>
+          </Link>
         </div>
 
         <div className="bg-[#0b1628] rounded-2xl border border-[#182b45] p-8">

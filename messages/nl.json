@@ -1,10 +1,11 @@
 {
   "nav": {
     "signIn": "Inloggen",
-    "getStartedFree": "Gratis beginnen"
+    "getStartedFree": "Gratis beginnen",
+    "dashboard": "Dashboard"
   },
   "auth": {
-    "appName": "Competitor Tracker",
+    "appName": "Rivalkollen",
     "signIn": {
       "title": "Welkom terug",
       "subtitle": "Log in op je account om door te gaan",

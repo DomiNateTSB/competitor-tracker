@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getTranslations, getLocale } from 'next-intl/server'
+import { createClient } from '@/utils/supabase/server'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 export default async function LandingPage() {
@@ -7,23 +8,30 @@ export default async function LandingPage() {
   const nt = await getTranslations('nav')
   const locale = await getLocale()
 
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   return (
     <div className="min-h-screen bg-[#07101f] text-[#dce8ff]">
       <nav className="fixed top-0 inset-x-0 z-50 bg-[#07101f]/80 backdrop-blur-md border-b border-[#182b45]">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#4f74ff] flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle cx="5" cy="5" r="3.5" stroke="white" strokeWidth="1.5"/>
-                <circle cx="9" cy="9" r="3.5" stroke="white" strokeWidth="1.5"/>
-              </svg>
+          <Link href="/" className="flex items-center">
+            <div className="bg-white rounded-lg px-2 py-1">
+              <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-7 w-auto object-contain" />
             </div>
-            <span className="text-[14px] font-semibold text-[#dce8ff]">Competitor Tracker</span>
-          </div>
+          </Link>
           <div className="flex items-center gap-3">
             <LanguageSwitcher currentLocale={locale} />
-            <Link href="/auth/sign-in" className="text-[13px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors">{nt('signIn')}</Link>
-            <Link href="/auth/sign-up" className="bg-[#4f74ff] hover:bg-[#3d63ee] text-white text-[13px] font-medium px-4 py-2 rounded-lg transition-colors">{nt('getStartedFree')}</Link>
+            {user ? (
+              <Link href="/dashboard" className="bg-[#4f74ff] hover:bg-[#3d63ee] text-white text-[13px] font-medium px-4 py-2 rounded-lg transition-colors">
+                {nt('dashboard')}
+              </Link>
+            ) : (
+              <>
+                <Link href="/auth/sign-in" className="text-[13px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors">{nt('signIn')}</Link>
+                <Link href="/auth/sign-up" className="bg-[#4f74ff] hover:bg-[#3d63ee] text-white text-[13px] font-medium px-4 py-2 rounded-lg transition-colors">{nt('getStartedFree')}</Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -115,10 +123,9 @@ export default async function LandingPage() {
       <footer className="border-t border-[#182b45] py-8 px-6">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-[#4f74ff] flex items-center justify-center">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="4" cy="4" r="3" stroke="white" strokeWidth="1.3"/><circle cx="8" cy="8" r="3" stroke="white" strokeWidth="1.3"/></svg>
+            <div className="bg-white rounded-md px-1.5 py-0.5">
+              <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-5 w-auto object-contain" />
             </div>
-            <span className="text-[13px] font-medium text-[#4d6a8a]">Competitor Tracker</span>
           </div>
           <div className="flex items-center gap-4">
             <p className="text-[12px] text-[#364f6e]">© {new Date().getFullYear()} {t('copyright')}</p>

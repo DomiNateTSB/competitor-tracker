@@ -11,23 +11,23 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://local-competitor-tr
 
 export const metadata: Metadata = {
   title: {
-    default: "Competitor Tracker — Monitor your competitors automatically",
-    template: "%s — Competitor Tracker",
+    default: "Rivalkollen — Övervaka dina konkurrenter automatiskt",
+    template: "%s — Rivalkollen",
   },
-  description: "Automatically monitor your competitors' websites and get alerted the moment something changes — prices, offers, content, anything.",
+  description: "Rivalkollen övervakar automatiskt dina konkurrenters webbplatser och varnar dig direkt när något förändras — priser, erbjudanden, innehåll, allt möjligt.",
   metadataBase: new URL(siteUrl),
   openGraph: {
-    title: "Competitor Tracker",
-    description: "Automatically monitor your competitors' websites and get alerted the moment something changes.",
+    title: "Rivalkollen",
+    description: "Övervaka dina konkurrenters webbplatser automatiskt och bli varnad när något förändras.",
     url: siteUrl,
-    siteName: "Competitor Tracker",
-    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "Competitor Tracker" }],
+    siteName: "Rivalkollen",
+    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "Rivalkollen" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Competitor Tracker",
-    description: "Automatically monitor your competitors' websites and get alerted the moment something changes.",
+    title: "Rivalkollen",
+    description: "Övervaka dina konkurrenters webbplatser automatiskt och bli varnad när något förändras.",
     images: ["/og-image.svg"],
   },
   icons: {

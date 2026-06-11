@@ -1,4 +1,5 @@
 import { updatePassword } from '@/app/auth/actions'
+import Link from 'next/link'
 import { getTranslations, getLocale } from 'next-intl/server'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
@@ -14,11 +15,12 @@ export default async function UpdatePasswordPage({
   return (
     <div className="min-h-screen bg-[#07101f] flex items-center justify-center p-4">
       <div className="w-full max-w-[360px]">
-        <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="w-8 h-8 rounded-xl bg-[#4f74ff] flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="6" r="4" stroke="white" strokeWidth="1.5"/><circle cx="10" cy="10" r="4" stroke="white" strokeWidth="1.5"/></svg>
-          </div>
-          <span className="text-[15px] font-semibold text-[#dce8ff]">{t('appName')}</span>
+        <div className="flex items-center justify-center mb-8">
+          <Link href="/">
+            <div className="bg-white rounded-xl px-4 py-2">
+              <img src="/rivalkollen-logo.png" alt="Rivalkollen" className="h-10 w-auto object-contain" />
+            </div>
+          </Link>
         </div>
 
         <div className="bg-[#0b1628] rounded-2xl border border-[#182b45] p-8">
@@ -31,7 +33,7 @@ export default async function UpdatePasswordPage({
 
           <form action={updatePassword} className="space-y-4">
             <div>
-              <label htmlFor="password" className="block text-[12px] font-medium text-[#6b85aa] mb-1.5">{t('updatePassword.password')}</label>
+              <label htmlFor="password" className="block text-[12px] font-medium text-[#6b85aa] mb-1.5">{t('updatePassword.newPassword')}</label>
               <input id="password" name="password" type="password" required minLength={6} autoComplete="new-password" placeholder="••••••••"
                 className="w-full px-3 py-2.5 border border-[#182b45] rounded-lg text-[13px] text-[#dce8ff] bg-[#071018] placeholder-[#2d4a68] focus:outline-none focus:ring-2 focus:ring-[#4f74ff]/30 focus:border-[#4f74ff] transition-colors" />
               <p className="text-[11px] text-[#364f6e] mt-1.5">{t('updatePassword.passwordHint')}</p>

@@ -12,7 +12,7 @@ export default function TermsPage() {
             <div className="w-6 h-6 rounded-md bg-[#4f74ff] flex items-center justify-center">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="4" cy="4" r="3" stroke="white" strokeWidth="1.3"/><circle cx="8" cy="8" r="3" stroke="white" strokeWidth="1.3"/></svg>
             </div>
-            <span className="text-[13px] font-semibold text-[#dce8ff]">Competitor Tracker</span>
+            <span className="text-[13px] font-semibold text-[#dce8ff]">Rivalkollen</span>
           </Link>
           <Link href="/" className="text-[13px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors">← Back</Link>
         </div>
@@ -24,11 +24,11 @@ export default function TermsPage() {
 
         <div className="prose-dark space-y-10 text-[15px] leading-relaxed text-[#6b85aa]">
           <Section title="1. Acceptance of Terms">
-            By accessing or using Competitor Tracker ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.
+            By accessing or using Rivalkollen ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.
           </Section>
 
           <Section title="2. Description of Service">
-            Competitor Tracker is a web application that monitors publicly accessible websites on your behalf and notifies you of detected changes. The Service stores snapshots of public web content for comparison purposes only.
+            Rivalkollen is a web application that monitors publicly accessible websites on your behalf and notifies you of detected changes. The Service stores snapshots of public web content for comparison purposes only.
           </Section>
 
           <Section title="3. Your Account">
@@ -78,7 +78,7 @@ export default function TermsPage() {
 
       <footer className="border-t border-[#182b45] py-8 px-6 mt-16">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <p className="text-[12px] text-[#364f6e]">© {new Date().getFullYear()} Competitor Tracker</p>
+          <p className="text-[12px] text-[#364f6e]">© {new Date().getFullYear()} Rivalkollen</p>
           <div className="flex items-center gap-4">
             <Link href="/terms" className="text-[12px] text-[#4f74ff]">Terms</Link>
             <Link href="/privacy" className="text-[12px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors">Privacy</Link>
