@@ -28,6 +28,7 @@ export async function POST(
   // Scrape
   const current = await scrapeWebsite(competitor.website_url)
   if (current.error) {
+    await supabase.from('competitors').update({ last_scrape_error: current.error }).eq('id', id)
     return NextResponse.json({ error: current.error }, { status: 422 })
   }
 
@@ -47,10 +48,10 @@ export async function POST(
     text_content: current.textContent,
   })
 
-  // Update last_checked_at
+  // Update last_checked_at and clear any previous error
   await supabase
     .from('competitors')
-    .update({ last_checked_at: new Date().toISOString() })
+    .update({ last_checked_at: new Date().toISOString(), last_scrape_error: null })
     .eq('id', id)
 
   // No previous snapshot — first check, just establish baseline

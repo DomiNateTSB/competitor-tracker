@@ -28,6 +28,7 @@ export async function GET(request: NextRequest) {
     try {
       const current = await scrapeWebsite(competitor.website_url!)
       if (current.error) {
+        await supabase.from('competitors').update({ last_scrape_error: current.error }).eq('id', competitor.id)
         results.push({ id: competitor.id, status: 'scrape_error', error: current.error })
         continue
       }
@@ -48,7 +49,7 @@ export async function GET(request: NextRequest) {
 
       await supabase
         .from('competitors')
-        .update({ last_checked_at: new Date().toISOString() })
+        .update({ last_checked_at: new Date().toISOString(), last_scrape_error: null })
         .eq('id', competitor.id)
 
       if (!previousSnapshot) {

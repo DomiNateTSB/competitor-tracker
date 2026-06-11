@@ -68,7 +68,10 @@
       "last30Days": "Ändringar senaste 30 dagarna",
       "diff": "Diff",
       "removed": "Borttaget",
-      "added": "Tillagt"
+      "added": "Tillagt",
+      "statusOk": "Aktiv",
+      "statusError": "Kontroll misslyckades",
+      "statusNever": "Ej kontrollerad"
     },
     "activity": {
       "title": "Aktivitet",
@@ -155,14 +158,23 @@
       "notes": "Anteckningar",
       "notesSaving": "Sparar...",
       "notesSaved": "Sparat",
-      "notesPlaceholder": "Lägg till privata anteckningar om den här konkurrenten..."
+      "notesPlaceholder": "Lägg till privata anteckningar om den här konkurrenten...",
+      "alertsTitle": "Aviseringsinställningar",
+      "alertsEnabled": "E-postaviseringar",
+      "alertsSeverity": "Avisera vid",
+      "alertsAll": "Alla ändringar",
+      "alertsMediumHigh": "Medel och hög",
+      "alertsHighOnly": "Hög allvarlighet",
+      "share": "Dela rapport",
+      "shareCopied": "Länk kopierad!",
+      "shareRevoke": "Ta bort länk"
     }
   },
   "landing": {
     "badge": "Automatiserad — körs varje dag, inget manuellt arbete",
     "heroTitle": "Vet när dina konkurrenter",
     "heroHighlight": "gör ett drag",
-    "heroSubtitle": "Competitor Tracker övervakar automatiskt dina konkurrenters webbplatser och varnar dig när något förändras — priser, erbjudanden, innehåll, allt möjligt.",
+    "heroSubtitle": "Rivalkollen övervakar automatiskt dina konkurrenters webbplatser och varnar dig när något förändras — priser, erbjudanden, innehåll, allt möjligt.",
     "startTracking": "Börja spåra gratis",
     "noCard": "Inget kreditkort krävs",
     "featuresTitle": "Allt du behöver för att hålla dig steget före",

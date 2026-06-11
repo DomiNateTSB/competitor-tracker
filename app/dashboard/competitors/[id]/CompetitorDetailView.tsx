@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ActivityChart from '@/app/dashboard/components/ActivityChart'
-import { updateNotes } from './actions'
+import { updateNotes, updateAlertPrefs, generateShareToken, revokeShareToken } from './actions'
 
 interface ChangeEvent {
   id: string
@@ -24,6 +24,9 @@ interface Competitor {
   created_at: string
   last_checked_at: string | null
   notes?: string | null
+  alert_enabled?: boolean | null
+  alert_min_severity?: string | null
+  share_token?: string | null
 }
 
 interface DetailLabels {
@@ -52,6 +55,15 @@ interface DetailLabels {
   notesPlaceholder: string
   checkNow: string
   checking: string
+  alertsTitle: string
+  alertsEnabled: string
+  alertsSeverity: string
+  alertsAll: string
+  alertsMediumHigh: string
+  alertsHighOnly: string
+  share: string
+  shareCopied: string
+  shareRevoke: string
 }
 
 const severityConfig = {
@@ -206,6 +218,135 @@ function NotesEditor({ competitorId, initialNotes, labels }: { competitorId: str
   )
 }
 
+function AlertPrefsSection({
+  competitorId,
+  initialEnabled,
+  initialSeverity,
+  labels,
+}: {
+  competitorId: string
+  initialEnabled: boolean
+  initialSeverity: string
+  labels: Pick<DetailLabels, 'alertsTitle' | 'alertsEnabled' | 'alertsSeverity' | 'alertsAll' | 'alertsMediumHigh' | 'alertsHighOnly'>
+}) {
+  const [enabled,  setEnabled]  = useState(initialEnabled)
+  const [severity, setSeverity] = useState(initialSeverity)
+
+  async function handleToggle(val: boolean) {
+    setEnabled(val)
+    await updateAlertPrefs(competitorId, val, severity)
+  }
+
+  async function handleSeverity(val: string) {
+    setSeverity(val)
+    await updateAlertPrefs(competitorId, enabled, val)
+  }
+
+  return (
+    <div className="mt-6 bg-[#0b1628] rounded-xl border border-[#182b45] px-5 py-4">
+      <p className="text-[11px] font-semibold text-[#364f6e] uppercase tracking-widest mb-4">{labels.alertsTitle}</p>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <span className="text-[13px] text-[#8ba4c0]">{labels.alertsEnabled}</span>
+          <button
+            onClick={() => handleToggle(!enabled)}
+            className={`relative w-10 h-5 rounded-full transition-colors ${enabled ? 'bg-[#4f74ff]' : 'bg-[#182b45]'}`}
+          >
+            <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${enabled ? 'left-5' : 'left-0.5'}`} />
+          </button>
+        </div>
+        {enabled && (
+          <div className="flex items-center justify-between">
+            <span className="text-[13px] text-[#8ba4c0]">{labels.alertsSeverity}</span>
+            <select
+              value={severity}
+              onChange={e => handleSeverity(e.target.value)}
+              className="bg-[#071018] border border-[#182b45] text-[#dce8ff] text-[12px] rounded-lg px-3 py-1.5 outline-none focus:border-[#4f74ff]"
+            >
+              <option value="all">{labels.alertsAll}</option>
+              <option value="medium_high">{labels.alertsMediumHigh}</option>
+              <option value="high">{labels.alertsHighOnly}</option>
+            </select>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function ShareSection({
+  competitorId,
+  initialToken,
+  labels,
+}: {
+  competitorId: string
+  initialToken: string | null | undefined
+  labels: Pick<DetailLabels, 'share' | 'shareCopied' | 'shareRevoke'>
+}) {
+  const [token,   setToken]   = useState<string | null>(initialToken ?? null)
+  const [copied,  setCopied]  = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  async function handleShare() {
+    setLoading(true)
+    const t = await generateShareToken(competitorId)
+    setToken(t)
+    if (t) {
+      const url = `${window.location.origin}/report/${t}`
+      await navigator.clipboard.writeText(url).catch(() => {})
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2500)
+    }
+    setLoading(false)
+  }
+
+  async function handleRevoke() {
+    setLoading(true)
+    await revokeShareToken(competitorId)
+    setToken(null)
+    setLoading(false)
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      {token ? (
+        <>
+          <button
+            onClick={handleShare}
+            disabled={loading}
+            className="flex items-center gap-1.5 text-[12px] text-emerald-400 border border-emerald-800/40 hover:border-emerald-700 bg-emerald-950/30 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M8 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM8 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" stroke="currentColor" strokeWidth="1.2"/>
+              <path d="M5.5 4.8l1 .6M5.5 7.2l1-.6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+            </svg>
+            {copied ? labels.shareCopied : labels.share}
+          </button>
+          <button
+            onClick={handleRevoke}
+            disabled={loading}
+            className="text-[12px] text-[#4d6a8a] hover:text-red-400 border border-[#182b45] hover:border-red-900/40 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
+          >
+            {labels.shareRevoke}
+          </button>
+        </>
+      ) : (
+        <button
+          onClick={handleShare}
+          disabled={loading}
+          className="flex items-center gap-1.5 text-[12px] text-[#4d6a8a] hover:text-[#dce8ff] border border-[#182b45] hover:border-[#243d5c] px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M8 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM8 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" stroke="currentColor" strokeWidth="1.2"/>
+            <path d="M5.5 4.8l1 .6M5.5 7.2l1-.6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+          </svg>
+          {loading ? '…' : labels.share}
+        </button>
+      )}
+    </div>
+  )
+}
+
 function exportCsv(events: ChangeEvent[], competitorName: string, removedLabel: string, addedLabel: string, changeRatioLabel: string) {
   const rows = [
     ['Date', 'Summary', 'Severity', `${changeRatioLabel} (%)`],
@@ -286,6 +427,11 @@ export default function CompetitorDetailView({
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
+          <ShareSection
+            competitorId={competitor.id}
+            initialToken={competitor.share_token}
+            labels={labels}
+          />
           {events.length > 0 && (
             <button
               onClick={() => exportCsv(events, competitor.name, labels.removed, labels.added, labels.changeRatio)}
@@ -354,6 +500,14 @@ export default function CompetitorDetailView({
           )
         }
       </div>
+
+      {/* Alert preferences */}
+      <AlertPrefsSection
+        competitorId={competitor.id}
+        initialEnabled={competitor.alert_enabled ?? true}
+        initialSeverity={competitor.alert_min_severity ?? 'all'}
+        labels={labels}
+      />
 
       {/* Notes */}
       <NotesEditor

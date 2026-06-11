@@ -15,12 +15,19 @@ export const metadata: Metadata = {
     template: "%s — Rivalkollen",
   },
   description: "Rivalkollen övervakar automatiskt dina konkurrenters webbplatser och varnar dig direkt när något förändras — priser, erbjudanden, innehåll, allt möjligt.",
+  keywords: [
+    "konkurrentbevakning", "konkurrentanalys", "webbplatsövervakning",
+    "bevaka konkurrenter", "prisövervakning", "förändringsspårning",
+    "småföretag Sverige", "marknadsanalys", "SEO-bevakning",
+    "competitor monitoring", "website monitoring Sverige",
+  ],
   metadataBase: new URL(siteUrl),
   openGraph: {
-    title: "Rivalkollen",
-    description: "Övervaka dina konkurrenters webbplatser automatiskt och bli varnad när något förändras.",
+    title: "Rivalkollen — Övervaka dina konkurrenter automatiskt",
+    description: "Rivalkollen övervakar automatiskt dina konkurrenters webbplatser och varnar dig direkt när något förändras — priser, erbjudanden, innehåll.",
     url: siteUrl,
     siteName: "Rivalkollen",
+    locale: "sv_SE",
     images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "Rivalkollen" }],
     type: "website",
   },
@@ -34,6 +41,9 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
   },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default function RootLayout({
@@ -42,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="sv" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full bg-[#07101f] text-[#dce8ff] font-sans">{children}</body>
     </html>
   );

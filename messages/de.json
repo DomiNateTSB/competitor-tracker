@@ -68,7 +68,10 @@
       "last30Days": "Änderungen in den letzten 30 Tagen",
       "diff": "Diff",
       "removed": "Entfernt",
-      "added": "Hinzugefügt"
+      "added": "Hinzugefügt",
+      "statusOk": "Aktiv",
+      "statusError": "Prüfung fehlgeschlagen",
+      "statusNever": "Noch nicht geprüft"
     },
     "activity": {
       "title": "Aktivität",
@@ -155,7 +158,16 @@
       "notes": "Notizen",
       "notesSaving": "Speichern...",
       "notesSaved": "Gespeichert",
-      "notesPlaceholder": "Private Notizen über diesen Konkurrenten hinzufügen..."
+      "notesPlaceholder": "Private Notizen über diesen Konkurrenten hinzufügen...",
+      "alertsTitle": "Benachrichtigungseinstellungen",
+      "alertsEnabled": "E-Mail-Benachrichtigungen",
+      "alertsSeverity": "Benachrichtigen bei",
+      "alertsAll": "Allen Änderungen",
+      "alertsMediumHigh": "Mittel & hoch",
+      "alertsHighOnly": "Nur hoch",
+      "share": "Bericht teilen",
+      "shareCopied": "Link kopiert!",
+      "shareRevoke": "Link entfernen"
     }
   },
   "landing": {

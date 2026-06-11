@@ -63,6 +63,10 @@ export default async function CompetitorDetailPage({
     notes: t('notes'), notesSaving: t('notesSaving'), notesSaved: t('notesSaved'),
     notesPlaceholder: t('notesPlaceholder'),
     checkNow: tc('checkNow'), checking: tc('checking'),
+    alertsTitle: t('alertsTitle'), alertsEnabled: t('alertsEnabled'),
+    alertsSeverity: t('alertsSeverity'), alertsAll: t('alertsAll'),
+    alertsMediumHigh: t('alertsMediumHigh'), alertsHighOnly: t('alertsHighOnly'),
+    share: t('share'), shareCopied: t('shareCopied'), shareRevoke: t('shareRevoke'),
   }
 
   return (

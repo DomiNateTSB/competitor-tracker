@@ -68,7 +68,10 @@
       "last30Days": "Wijzigingen afgelopen 30 dagen",
       "diff": "Diff",
       "removed": "Verwijderd",
-      "added": "Toegevoegd"
+      "added": "Toegevoegd",
+      "statusOk": "Actief",
+      "statusError": "Controle mislukt",
+      "statusNever": "Nog niet gecontroleerd"
     },
     "activity": {
       "title": "Activiteit",
@@ -155,7 +158,16 @@
       "notes": "Notities",
       "notesSaving": "Opslaan...",
       "notesSaved": "Opgeslagen",
-      "notesPlaceholder": "Voeg privénotities toe over deze concurrent..."
+      "notesPlaceholder": "Voeg privénotities toe over deze concurrent...",
+      "alertsTitle": "Meldingsinstellingen",
+      "alertsEnabled": "E-mailmeldingen",
+      "alertsSeverity": "Melden bij",
+      "alertsAll": "Alle wijzigingen",
+      "alertsMediumHigh": "Middel en hoog",
+      "alertsHighOnly": "Alleen hoog",
+      "share": "Rapport delen",
+      "shareCopied": "Link gekopieerd!",
+      "shareRevoke": "Link verwijderen"
     }
   },
   "landing": {

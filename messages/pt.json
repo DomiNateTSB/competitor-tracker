@@ -68,7 +68,10 @@
       "last30Days": "Alterações nos últimos 30 dias",
       "diff": "Diff",
       "removed": "Removido",
-      "added": "Adicionado"
+      "added": "Adicionado",
+      "statusOk": "Ativo",
+      "statusError": "Verificação falhou",
+      "statusNever": "Não verificado"
     },
     "activity": {
       "title": "Atividade",
@@ -155,7 +158,16 @@
       "notes": "Notas",
       "notesSaving": "Salvando...",
       "notesSaved": "Salvo",
-      "notesPlaceholder": "Adicione notas privadas sobre este concorrente..."
+      "notesPlaceholder": "Adicione notas privadas sobre este concorrente...",
+      "alertsTitle": "Preferências de alertas",
+      "alertsEnabled": "Alertas por email",
+      "alertsSeverity": "Alertar em",
+      "alertsAll": "Todas as alterações",
+      "alertsMediumHigh": "Médio e alto",
+      "alertsHighOnly": "Apenas alto",
+      "share": "Compartilhar relatório",
+      "shareCopied": "Link copiado!",
+      "shareRevoke": "Remover link"
     }
   },
   "landing": {

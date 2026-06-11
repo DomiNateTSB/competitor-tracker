@@ -22,6 +22,7 @@ interface Competitor {
   category: string | null
   created_at: string
   last_checked_at: string | null
+  last_scrape_error: string | null
 }
 
 interface Labels {
@@ -36,6 +37,9 @@ interface Labels {
   diff: string
   removed: string
   added: string
+  statusOk: string
+  statusError: string
+  statusNever: string
 }
 
 const severityConfig: Record<string, { dot: string; bg: string; border: string; text: string }> = {
@@ -147,6 +151,18 @@ export default function CompetitorCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <Link href={`/dashboard/competitors/${competitor.id}`} className="text-[14px] font-medium text-[#dce8ff] hover:text-[#7a96ff] truncate transition-colors">{competitor.name}</Link>
+            {/* Status indicator */}
+            {competitor.website_url && (() => {
+              const hasError = !!competitor.last_scrape_error
+              const neverChecked = !competitor.last_checked_at && !hasError
+              const dotClass = neverChecked ? 'bg-[#364f6e]' : hasError ? 'bg-red-500' : 'bg-emerald-500'
+              const tipText  = neverChecked ? labels.statusNever : hasError ? labels.statusError : labels.statusOk
+              return (
+                <span title={tipText} className="inline-flex items-center gap-1 text-[11px] text-[#4d6a8a]">
+                  <span className={`w-1.5 h-1.5 rounded-full ${dotClass}`} />
+                </span>
+              )
+            })()}
             {hasChanges && (
               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-950/50 border border-amber-700/40 text-[10px] font-medium text-amber-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span>

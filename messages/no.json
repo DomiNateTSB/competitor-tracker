@@ -68,7 +68,10 @@
       "last30Days": "Endringer siste 30 dager",
       "diff": "Diff",
       "removed": "Fjernet",
-      "added": "Lagt til"
+      "added": "Lagt til",
+      "statusOk": "Aktiv",
+      "statusError": "Sjekk mislyktes",
+      "statusNever": "Ikke sjekket"
     },
     "activity": {
       "title": "Aktivitet",
@@ -155,7 +158,16 @@
       "notes": "Notater",
       "notesSaving": "Lagrer...",
       "notesSaved": "Lagret",
-      "notesPlaceholder": "Legg til private notater om denne konkurrenten..."
+      "notesPlaceholder": "Legg til private notater om denne konkurrenten...",
+      "alertsTitle": "Varslingsinnstillinger",
+      "alertsEnabled": "E-postvarsler",
+      "alertsSeverity": "Varsle ved",
+      "alertsAll": "Alle endringer",
+      "alertsMediumHigh": "Middels og høy",
+      "alertsHighOnly": "Kun høy",
+      "share": "Del rapport",
+      "shareCopied": "Lenke kopiert!",
+      "shareRevoke": "Fjern lenke"
     }
   },
   "landing": {

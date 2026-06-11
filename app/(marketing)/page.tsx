@@ -3,6 +3,18 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import { createClient } from '@/utils/supabase/server'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Rivalkollen',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  description: 'Rivalkollen övervakar automatiskt dina konkurrenters webbplatser och varnar dig direkt när något förändras.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'SEK', availability: 'https://schema.org/InStock' },
+  inLanguage: 'sv',
+  url: 'https://rivalkollen.se',
+}
+
 export default async function LandingPage() {
   const t = await getTranslations('landing')
   const nt = await getTranslations('nav')
@@ -13,6 +25,7 @@ export default async function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#07101f] text-[#dce8ff]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <nav className="fixed top-0 inset-x-0 z-50 bg-[#07101f]/80 backdrop-blur-md border-b border-[#182b45]">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center">

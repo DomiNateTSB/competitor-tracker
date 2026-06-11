@@ -68,7 +68,10 @@
       "last30Days": "Muutokset viimeisen 30 päivän aikana",
       "diff": "Diff",
       "removed": "Poistettu",
-      "added": "Lisätty"
+      "added": "Lisätty",
+      "statusOk": "Aktiivinen",
+      "statusError": "Tarkistus epäonnistui",
+      "statusNever": "Ei tarkistettu"
     },
     "activity": {
       "title": "Toiminta",
@@ -155,7 +158,16 @@
       "notes": "Muistiinpanot",
       "notesSaving": "Tallennetaan...",
       "notesSaved": "Tallennettu",
-      "notesPlaceholder": "Lisää yksityisiä muistiinpanoja tästä kilpailijasta..."
+      "notesPlaceholder": "Lisää yksityisiä muistiinpanoja tästä kilpailijasta...",
+      "alertsTitle": "Ilmoitusasetukset",
+      "alertsEnabled": "Sähköposti-ilmoitukset",
+      "alertsSeverity": "Ilmoita muutoksesta",
+      "alertsAll": "Kaikki muutokset",
+      "alertsMediumHigh": "Keskitaso ja korkea",
+      "alertsHighOnly": "Vain korkea",
+      "share": "Jaa raportti",
+      "shareCopied": "Linkki kopioitu!",
+      "shareRevoke": "Poista linkki"
     }
   },
   "landing": {

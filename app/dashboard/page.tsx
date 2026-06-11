@@ -84,6 +84,9 @@ export default async function DashboardPage() {
     diff: t('diff'),
     removed: t('removed'),
     added: t('added'),
+    statusOk: t('statusOk'),
+    statusError: t('statusError'),
+    statusNever: t('statusNever'),
   }
 
   const categoryLabels = {

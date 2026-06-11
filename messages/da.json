@@ -68,7 +68,10 @@
       "last30Days": "Ændringer de seneste 30 dage",
       "diff": "Diff",
       "removed": "Fjernet",
-      "added": "Tilføjet"
+      "added": "Tilføjet",
+      "statusOk": "Aktiv",
+      "statusError": "Kontrol mislykkedes",
+      "statusNever": "Ikke kontrolleret"
     },
     "activity": {
       "title": "Aktivitet",
@@ -155,7 +158,16 @@
       "notes": "Noter",
       "notesSaving": "Gemmer...",
       "notesSaved": "Gemt",
-      "notesPlaceholder": "Tilføj private noter om denne konkurrent..."
+      "notesPlaceholder": "Tilføj private noter om denne konkurrent...",
+      "alertsTitle": "Notifikationsindstillinger",
+      "alertsEnabled": "E-mailnotifikationer",
+      "alertsSeverity": "Notificer ved",
+      "alertsAll": "Alle ændringer",
+      "alertsMediumHigh": "Mellem og høj",
+      "alertsHighOnly": "Kun høj",
+      "share": "Del rapport",
+      "shareCopied": "Link kopieret!",
+      "shareRevoke": "Fjern link"
     }
   },
   "landing": {
