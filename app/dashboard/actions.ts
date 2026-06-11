@@ -15,6 +15,21 @@ export async function addCompetitor(formData: FormData) {
 
   if (!name) return { error: 'Name is required' }
 
+  // Duplicate URL check
+  if (website_url) {
+    const { data: existing } = await supabase
+      .from('competitors')
+      .select('name')
+      .eq('user_id', user.id)
+      .eq('website_url', website_url)
+      .eq('is_active', true)
+      .maybeSingle()
+
+    if (existing) {
+      return { error: `You're already tracking "${existing.name}" at this URL.` }
+    }
+  }
+
   // Enforce free plan limit (1 competitor)
   const { count } = await supabase
     .from('competitors')

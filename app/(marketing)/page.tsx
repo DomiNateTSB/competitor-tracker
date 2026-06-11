@@ -26,6 +26,7 @@ export default async function LandingPage() {
               </Link>
             ) : (
               <>
+                <Link href="/demo" className="text-[13px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors">Try demo</Link>
                 <Link href="/auth/sign-in" className="text-[13px] text-[#4d6a8a] hover:text-[#dce8ff] transition-colors">{nt('signIn')}</Link>
                 <Link href="/auth/sign-up" className="bg-[#4f74ff] hover:bg-[#3d63ee] text-white text-[13px] font-medium px-4 py-2 rounded-lg transition-colors">{nt('getStartedFree')}</Link>
               </>
