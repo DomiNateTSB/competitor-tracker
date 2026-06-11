@@ -1,5 +1,8 @@
 {
-  "nav": { "signIn": "Logga in", "getStartedFree": "Kom igång gratis" },
+  "nav": {
+    "signIn": "Logga in",
+    "getStartedFree": "Kom igång gratis"
+  },
   "auth": {
     "appName": "Competitor Tracker",
     "signIn": {
@@ -39,7 +42,11 @@
     }
   },
   "dashboard": {
-    "nav": { "competitors": "Konkurrenter", "activity": "Aktivitet" },
+    "nav": {
+      "competitors": "Konkurrenter",
+      "activity": "Aktivitet",
+      "settings": "Inställningar"
+    },
     "competitors": {
       "title": "Konkurrenter",
       "subtitle": "Övervaka webbplatsändringar och uppdateringar",
@@ -93,6 +100,32 @@
       "electrician": "Elektriker",
       "plumber": "Rörmokare",
       "other": "Övrigt"
+    },
+    "settings": {
+      "title": "Inställningar",
+      "subtitle": "Hantera ditt konto och dina preferenser",
+      "accountSection": "E-postadress",
+      "emailLabel": "Nuvarande e-post",
+      "emailDesc": "Uppdatera e-postadressen kopplad till ditt konto.",
+      "newEmail": "Ny e-postadress",
+      "updateEmail": "Uppdatera e-post",
+      "updatingEmail": "Uppdaterar...",
+      "passwordSection": "Lösenord",
+      "passwordDesc": "Välj ett nytt lösenord för ditt konto.",
+      "currentPassword": "Nuvarande lösenord",
+      "newPassword": "Nytt lösenord",
+      "passwordHint": "Minst 6 tecken",
+      "updatePassword": "Uppdatera lösenord",
+      "updatingPassword": "Uppdaterar...",
+      "dangerSection": "Riskzon",
+      "dangerDesc": "Permanent borttagning av ditt konto och all data. Det går inte att ångra.",
+      "deleteAccount": "Radera konto",
+      "deleteConfirmTitle": "Är du säker?",
+      "deleteConfirmDesc": "Detta raderar ditt konto och all data permanent. Det går inte att ångra.",
+      "deleteConfirmButton": "Ja, radera mitt konto",
+      "cancel": "Avbryt",
+      "successEmail": "Kolla din e-post för att bekräfta ändringen.",
+      "successPassword": "Lösenordet har uppdaterats."
     }
   },
   "landing": {

@@ -1,5 +1,8 @@
 {
-  "nav": { "signIn": "Sign in", "getStartedFree": "Get started free" },
+  "nav": {
+    "signIn": "Sign in",
+    "getStartedFree": "Get started free"
+  },
   "auth": {
     "appName": "Competitor Tracker",
     "signIn": {
@@ -39,7 +42,11 @@
     }
   },
   "dashboard": {
-    "nav": { "competitors": "Competitors", "activity": "Activity" },
+    "nav": {
+      "competitors": "Competitors",
+      "activity": "Activity",
+      "settings": "Settings"
+    },
     "competitors": {
       "title": "Competitors",
       "subtitle": "Monitor website changes and updates",
@@ -93,6 +100,32 @@
       "electrician": "Electrician",
       "plumber": "Plumber",
       "other": "Other"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your account and preferences",
+      "accountSection": "Email address",
+      "emailLabel": "Current email",
+      "emailDesc": "Update the email address linked to your account.",
+      "newEmail": "New email address",
+      "updateEmail": "Update email",
+      "updatingEmail": "Updating...",
+      "passwordSection": "Password",
+      "passwordDesc": "Choose a new password for your account.",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "passwordHint": "Minimum 6 characters",
+      "updatePassword": "Update password",
+      "updatingPassword": "Updating...",
+      "dangerSection": "Danger zone",
+      "dangerDesc": "Permanently delete your account and all data. This cannot be undone.",
+      "deleteAccount": "Delete account",
+      "deleteConfirmTitle": "Are you sure?",
+      "deleteConfirmDesc": "This will permanently delete your account and all your data. This cannot be undone.",
+      "deleteConfirmButton": "Yes, delete my account",
+      "cancel": "Cancel",
+      "successEmail": "Check your email to confirm the change.",
+      "successPassword": "Password updated successfully."
     }
   },
   "landing": {

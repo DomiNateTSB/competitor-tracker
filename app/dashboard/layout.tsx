@@ -20,7 +20,7 @@ export default async function DashboardLayout({
       <Sidebar
         email={user.email ?? ''}
         currentLocale={locale}
-        navLabels={{ competitors: t('competitors'), activity: t('activity') }}
+        navLabels={{ competitors: t('competitors'), activity: t('activity'), settings: t('settings') }}
       />
       <main className="flex-1 overflow-y-auto">
         {children}
