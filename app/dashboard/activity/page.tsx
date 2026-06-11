@@ -40,12 +40,13 @@ export default async function ActivityPage() {
         .limit(200)
     : { data: [] }
 
+  type ChangeEvent = NonNullable<typeof events>[number]
   const grouped = (events ?? []).reduce((acc, e) => {
     const day = new Date(e.detected_at).toLocaleDateString('sv-SE', { day: 'numeric', month: 'long', year: 'numeric' })
     acc[day] = acc[day] ?? []
     acc[day].push(e)
     return acc
-  }, {} as Record<string, typeof events>)
+  }, {} as Record<string, ChangeEvent[]>)
 
   return (
     <div className="px-8 py-8 max-w-3xl">
