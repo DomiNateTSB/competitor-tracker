@@ -55,10 +55,10 @@ export async function addCompetitor(formData: FormData) {
   return { success: true }
 }
 
-export async function deleteCompetitor(id: string) {
+export async function deleteCompetitor(id: string): Promise<void> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  if (!user) return
 
   await supabase
     .from('competitors')
@@ -67,5 +67,4 @@ export async function deleteCompetitor(id: string) {
     .eq('user_id', user.id)
 
   revalidatePath('/dashboard')
-  return { success: true }
 }
